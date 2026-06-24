@@ -425,9 +425,8 @@ function render(){
 }
 
 function renderUserTab(){
-  return `<div id="user-tab-content"><div style="text-align:center;padding:20px;color:var(--text-2)"><div class="spinner" style="margin:0 auto 8px"></div>ユーザー情報を読み込み中...</div></div>`;
-  // 非同期でロード
   setTimeout(loadUserTab,100);
+  return `<div id="user-tab-content"><div style="text-align:center;padding:20px;color:var(--text-2)"><div class="spinner" style="margin:0 auto 8px"></div>ユーザー情報を読み込み中...</div></div>`;
 }
 
 async function loadUserTab(){
