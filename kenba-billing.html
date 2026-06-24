@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>現場請求管理</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#1a3a5c;--navy-dark:#0f2640;--navy-light:#e8f0f8;
+  --gold:#c9a84c;--gold-dark:#a88a38;
+  --bg:#f5f6f8;--surface:#ffffff;--border:#e2e4e8;--border-med:#c8cace;
+  --text:#1a1d23;--text-2:#5a6070;--text-3:#9aa0ae;
+  --green:#1a7a4a;--green-bg:#eaf5ef;--green-bd:#b2dcc4;
+  --amber:#8a5c00;--amber-bg:#fef8e8;--amber-bd:#f0d080;
+  --red:#a32020;--red-bg:#fdf0f0;--red-bd:#f0b8b8;
+  --blue:#1a5ca8;--blue-bg:#eaf0fb;--blue-bd:#a8c4ee;
+  --radius:10px;--radius-sm:7px;--shadow:0 2px 8px rgba(0,0,0,.08);
+  --font:'Hiragino Sans','Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif;
+}
+body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14px;min-height:100vh}
+.app{display:flex;flex-direction:column;min-height:100vh}
+.topbar{background:var(--navy);color:#fff;padding:0 20px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.topbar-left{display:flex;align-items:center;gap:10px}
+.logo{width:32px;height:32px;background:rgba(255,255,255,.12);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.app-name{font-size:16px;font-weight:600;letter-spacing:.02em}
+.app-sub{font-size:11px;opacity:.6;margin-top:1px}
+.main{flex:1;padding:16px;max-width:900px;width:100%;margin:0 auto;display:flex;flex-direction:column;gap:12px}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border-radius:var(--radius-sm);font-size:13px;font-weight:500;cursor:pointer;border:none;transition:all .15s;white-space:nowrap;font-family:var(--font)}
+.btn-navy{background:var(--navy);color:#fff}.btn-navy:hover{background:var(--navy-dark)}
+.btn-ghost{background:transparent;color:var(--text-2);border:1px solid var(--border)}.btn-ghost:hover{background:var(--bg)}
+.btn-danger{background:var(--red-bg);color:var(--red);border:1px solid var(--red-bd)}.btn-danger:hover{background:#fce0e0}
+.btn-success{background:var(--green-bg);color:var(--green);border:1px solid var(--green-bd)}.btn-success:hover{background:#d4eedd}
+.btn-sm{padding:5px 10px;font-size:12px;border-radius:6px}
+.btn-xs{padding:3px 8px;font-size:11px;border-radius:5px}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.alert{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border-radius:var(--radius-sm);font-size:13px;border:1px solid}
+.alert-warn{background:var(--amber-bg);color:var(--amber);border-color:var(--amber-bd)}
+.alert-danger{background:var(--red-bg);color:var(--red);border-color:var(--red-bd)}
+.alert-info{background:var(--blue-bg);color:var(--blue);border-color:var(--blue-bd)}
+.alert-icon{font-size:18px;flex-shrink:0;line-height:1}
+.alerts-area{display:flex;flex-direction:column;gap:8px}
+.tab-bar{display:flex;gap:0;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+.tab-btn{flex:1;padding:11px 0;font-size:13px;font-weight:600;border:none;background:transparent;cursor:pointer;color:var(--text-2);transition:all .15s;font-family:var(--font);display:flex;align-items:center;justify-content:center;gap:6px}
+.tab-btn:first-child{border-right:1px solid var(--border)}
+.tab-btn.active{background:var(--navy);color:#fff}
+.tab-btn .tab-count{font-size:11px;padding:1px 7px;border-radius:20px;font-weight:700}
+.tab-btn.active .tab-count{background:rgba(255,255,255,.2);color:#fff}
+.tab-btn:not(.active) .tab-count{background:var(--bg);color:var(--text-2)}
+.tab-btn.tab-done:not(.active) .tab-count{background:var(--green-bg);color:var(--green)}
+.summary-bar{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.sum-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px;box-shadow:var(--shadow)}
+.sum-lbl{font-size:11px;color:var(--text-3);margin-bottom:4px}
+.sum-val{font-size:20px;font-weight:700}
+.sum-sub{font-size:11px;color:var(--text-2);margin-top:2px}
+.card{background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);overflow:hidden;box-shadow:var(--shadow)}
+.card-alert{border-color:var(--amber-bd);border-width:1.5px}
+.card-header{padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;user-select:none;transition:background .15s}
+.card-header:hover{background:#fafbfc}
+.card-icon{width:38px;height:38px;background:var(--navy);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.card-icon-warn{background:#7a4500}
+.card-info{flex:1;min-width:0}
+.card-name{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card-meta{font-size:12px;color:var(--text-2);margin-top:2px}
+.card-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.chevron{font-size:18px;color:var(--text-3);transition:transform .2s;line-height:1}
+.chevron.open{transform:rotate(180deg)}
+.badge{display:inline-flex;align-items:center;gap:3px;font-size:11px;font-weight:600;padding:3px 8px;border-radius:20px;white-space:nowrap}
+.badge-active{background:var(--green-bg);color:var(--green)}
+.badge-warn{background:var(--amber-bg);color:var(--amber)}
+.badge-done{background:#f0f1f3;color:var(--text-2)}
+.card-body{border-top:1px solid var(--border);padding:16px}
+.section-label{font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-bottom:16px}
+.info-item .lbl{font-size:11px;color:var(--text-3);margin-bottom:2px}
+.info-item .val{font-size:13px;font-weight:500}
+.progress-wrap{margin-bottom:16px}
+.progress-bar{height:5px;background:var(--bg);border-radius:3px;overflow:hidden;border:1px solid var(--border)}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--navy),#2a6cb8);border-radius:3px;transition:width .6s}
+.progress-meta{display:flex;justify-content:space-between;font-size:11px;color:var(--text-3);margin-top:4px}
+.divider{height:1px;background:var(--border);margin:14px 0}
+.billing-wrap{overflow-x:auto;margin-bottom:12px}
+table{width:100%;border-collapse:collapse;min-width:500px}
+thead th{text-align:left;padding:8px 10px;font-size:11px;font-weight:700;color:var(--text-3);border-bottom:1px solid var(--border);text-transform:uppercase;letter-spacing:.05em;background:#fafbfc}
+tbody td{padding:10px;border-bottom:1px solid var(--border);vertical-align:middle}
+tbody tr:last-child td{border-bottom:none}
+tbody tr.row-overdue{background:var(--red-bg)}
+tbody tr.row-upcoming{background:var(--amber-bg)}
+tbody tr:hover{background:#fafbfc}
+.billing-label{font-weight:500;font-size:13px}
+.billing-note{font-size:11px;color:var(--text-2);margin-top:2px}
+.date-log{font-size:10px;color:var(--text-3);margin-top:2px}
+.amount-cell{font-size:13px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+.status-actions{display:flex;flex-direction:column;gap:4px;align-items:flex-start}
+.chip{display:inline-flex;align-items:center;gap:3px;font-size:11px;font-weight:600;padding:3px 8px;border-radius:20px;border:1px solid}
+.chip-pending{background:#f0f1f3;color:var(--text-2);border-color:var(--border-med)}
+.chip-issued{background:var(--blue-bg);color:var(--blue);border-color:var(--blue-bd)}
+.chip-paid{background:var(--green-bg);color:var(--green);border-color:var(--green-bd)}
+.chip-overdue{background:var(--red-bg);color:var(--red);border-color:var(--red-bd)}
+.doc-list{display:flex;flex-direction:column;gap:4px;margin-bottom:8px}
+.doc-row{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:var(--radius-sm);background:var(--bg)}
+.doc-type-pill{font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px}
+.pill-original{background:var(--blue-bg);color:var(--blue)}
+.pill-change{background:var(--amber-bg);color:var(--amber)}
+.doc-name{flex:1;font-size:12px;font-weight:500}
+.doc-date{font-size:11px;color:var(--text-3);white-space:nowrap}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:flex;align-items:flex-end;justify-content:center;padding:0;backdrop-filter:blur(2px)}
+@media(min-width:600px){.overlay{align-items:center;padding:20px}}
+.modal{background:var(--surface);border-radius:16px 16px 0 0;width:100%;max-height:92vh;display:flex;flex-direction:column;overflow:hidden}
+@media(min-width:600px){.modal{border-radius:var(--radius);max-width:540px;max-height:88vh}}
+.modal-head{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.modal-title{font-size:16px;font-weight:700}
+.modal-close{background:none;border:none;font-size:22px;cursor:pointer;color:var(--text-2);padding:2px;line-height:1;font-family:var(--font)}
+.modal-body{padding:20px;overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:16px}
+.modal-foot{padding:14px 20px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:10px;flex-shrink:0}
+.field{display:flex;flex-direction:column;gap:5px}
+.field label{font-size:12px;font-weight:600;color:var(--text-2)}
+.field input,.field select{border:1px solid var(--border-med);border-radius:var(--radius-sm);padding:9px 11px;font-size:14px;background:var(--surface);color:var(--text);font-family:var(--font);width:100%}
+.field input:focus,.field select:focus{outline:none;border-color:var(--navy);box-shadow:0 0 0 2px rgba(26,58,92,.12)}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.upload-zone{border:2px dashed var(--border-med);border-radius:var(--radius);padding:28px;text-align:center;cursor:pointer;transition:all .2s;background:var(--bg)}
+.upload-zone:hover,.upload-zone.dragging{border-color:var(--navy);background:var(--navy-light)}
+.upload-zone .uz-icon{font-size:36px;margin-bottom:8px}
+.upload-zone p{font-size:13px;color:var(--text-2)}
+.upload-zone small{font-size:11px;color:var(--text-3)}
+.ai-box{display:flex;align-items:center;gap:10px;padding:12px;border-radius:var(--radius-sm);font-size:13px}
+.ai-analyzing{background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-bd)}
+.ai-done{background:var(--green-bg);color:var(--green);border:1px solid var(--green-bd)}
+.ai-error{background:var(--red-bg);color:var(--red);border:1px solid var(--red-bd)}
+.spinner{width:16px;height:16px;border:2px solid rgba(26,92,168,.3);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+.setup-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:24px;background:var(--bg)}
+.setup-card{background:var(--surface);border-radius:16px;padding:32px;max-width:480px;width:100%;box-shadow:var(--shadow);border:1px solid var(--border)}
+.setup-logo{width:56px;height:56px;background:var(--navy);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 16px}
+.setup-title{font-size:20px;font-weight:700;text-align:center;margin-bottom:6px}
+.setup-sub{font-size:13px;color:var(--text-2);text-align:center;margin-bottom:24px;line-height:1.6}
+.setup-step{display:flex;gap:10px;margin-bottom:14px;align-items:flex-start}
+.step-num{width:22px;height:22px;background:var(--navy);color:#fff;border-radius:50%;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.step-text{font-size:13px;color:var(--text-2);line-height:1.6}
+.loading-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;gap:16px;color:var(--text-2)}
+.loading-screen .big-spinner{width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--navy);border-radius:50%;animation:spin .8s linear infinite}
+.empty-state{text-align:center;padding:48px 20px;color:var(--text-2)}
+.empty-state .es-icon{font-size:52px;margin-bottom:14px;opacity:.4}
+.sync-indicator{font-size:11px;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:5px}
+.sync-dot{width:6px;height:6px;border-radius:50%;background:#4caf50}
+.sync-dot.syncing{background:#ff9800;animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+</style>
+</head>
+<body>
+
+<!-- ローディング画面 -->
+<div id="loading-screen" class="loading-screen">
+  <div class="big-spinner"></div>
+  <div>接続中...</div>
+</div>
+
+<!-- 初回セットアップ画面 -->
+<div id="setup-screen" class="setup-screen" style="display:none">
+  <div class="setup-card">
+    <div class="setup-logo">🏗️</div>
+    <h1 class="setup-title">現場請求管理 — 初回設定</h1>
+    <p class="setup-sub">Supabase接続情報とAnthropicのAPIキーを設定してください。<br>設定はこのブラウザに保存されます。</p>
+    <div class="setup-step"><div class="step-num">1</div><div class="step-text">Supabase Project URL<br><small>例: https://xxxx.supabase.co</small></div></div>
+    <div class="field" style="margin-bottom:14px"><input id="sb-url" placeholder="https://xxxx.supabase.co" type="url"></div>
+    <div class="setup-step"><div class="step-num">2</div><div class="step-text">Supabase anon key<br><small>Project Settings → API → anon public</small></div></div>
+    <div class="field" style="margin-bottom:14px"><input id="sb-key" placeholder="eyJ..." type="password"></div>
+    <div class="setup-step"><div class="step-num">3</div><div class="step-text">Anthropic APIキー（PDF自動解析用）<br><small>console.anthropic.com で取得</small></div></div>
+    <div class="field" style="margin-bottom:20px"><input id="anthropic-key" placeholder="sk-ant-..." type="password"></div>
+    <button class="btn btn-navy" style="width:100%;justify-content:center" onclick="saveSetup()">設定を保存して開始</button>
+    <p style="font-size:11px;color:var(--text-3);text-align:center;margin-top:12px">設定情報はこのブラウザのlocalStorageにのみ保存されます</p>
+  </div>
+</div>
+
+<!-- メインアプリ -->
+<div id="main-app" class="app" style="display:none">
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="logo">🏗️</div>
+      <div>
+        <div class="app-name">現場請求管理</div>
+        <div class="app-sub" id="site-count-label">読み込み中...</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <div class="sync-indicator"><div class="sync-dot" id="sync-dot"></div><span id="sync-label">同期済</span></div>
+      <button class="btn btn-ghost btn-sm" onclick="openSettings()">⚙️ 設定</button>
+      <button class="btn btn-navy btn-sm" onclick="openAddModal()">＋ 現場を追加</button>
+    </div>
+  </div>
+  <div class="main" id="main-content-area"></div>
+</div>
+
+<!-- モーダル -->
+<div class="overlay" id="modal-overlay" style="display:none" onclick="handleOverlayClick(event)">
+  <div class="modal" id="modal-box">
+    <div class="modal-head">
+      <div class="modal-title" id="modal-title">モーダル</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-foot" id="modal-foot"></div>
+  </div>
+</div>
+
+<script>
+// ─── 設定 ───
+const CFG_KEY = 'kenba_config_v1';
+let cfg = {};
+
+function loadCfg(){ try{ cfg=JSON.parse(localStorage.getItem(CFG_KEY)||'{}'); }catch(e){ cfg={}; } }
+function saveCfg(){ localStorage.setItem(CFG_KEY, JSON.stringify(cfg)); }
+
+function saveSetup(){
+  const url = document.getElementById('sb-url').value.trim();
+  const key = document.getElementById('sb-key').value.trim();
+  const akey = document.getElementById('anthropic-key').value.trim();
+  if(!url||!key){ alert('SupabaseのURLとキーを入力してください'); return; }
+  cfg = { sbUrl:url, sbKey:key, anthropicKey:akey };
+  saveCfg();
+  location.reload();
+}
+
+// ─── Supabase ───
+let sb = null;
+
+function initSupabase(){
+  if(!cfg.sbUrl||!cfg.sbKey) return false;
+  sb = supabase.createClient(cfg.sbUrl, cfg.sbKey);
+  return true;
+}
+
+// ─── STATE ───
+const TODAY = new Date(); TODAY.setHours(0,0,0,0);
+let sites = [];
+let openSiteId = null;
+let currentTab = 'active';
+
+// ─── SYNC UI ───
+function setSyncing(){ document.getElementById('sync-dot').className='sync-dot syncing'; document.getElementById('sync-label').textContent='同期中...'; }
+function setSynced(){ document.getElementById('sync-dot').className='sync-dot'; document.getElementById('sync-label').textContent='同期済'; }
+function setSyncError(){ document.getElementById('sync-dot').className='sync-dot'; document.getElementById('sync-dot').style.background='#e53935'; document.getElementById('sync-label').textContent='同期エラー'; }
+
+// ─── DB LOAD ───
+async function loadFromDB(){
+  const { data: sitesData, error: e1 } = await sb.from('sites').select('*');
+  if(e1) throw e1;
+  const { data: billingsData, error: e2 } = await sb.from('billings').select('*');
+  if(e2) throw e2;
+  const { data: docsData, error: e3 } = await sb.from('docs').select('*');
+  if(e3) throw e3;
+
+  sites = sitesData.map(s=>({
+    id: s.id,
+    siteNo: s.site_no||'',
+    client: s.client||'',
+    name: s.name||'',
+    address: s.address||'',
+    structure: s.structure||'',
+    start: s.start_date||'',
+    completion: s.completion_date||'',
+    handover: s.handover_date||'',
+    totalAmount: s.total_amount||0,
+    billings: billingsData.filter(b=>b.site_id===s.id).map(b=>({
+      id: b.id,
+      label: b.label||'',
+      dueDate: b.due_date||'',
+      amount: b.amount||0,
+      note: b.note||'',
+      issuedDate: b.issued_date||null,
+      paidDate: b.paid_date||null,
+    })),
+    docs: docsData.filter(d=>d.site_id===s.id).map(d=>({
+      id: d.id,
+      type: d.type||'change',
+      name: d.name||'',
+      date: d.date||'',
+      notes: d.notes||'',
+    }))
+  }));
+}
+
+// ─── DB SAVE (upsert) ───
+async function saveSite(s){
+  setSyncing();
+  try{
+    const { error: e1 } = await sb.from('sites').upsert({
+      id:s.id, site_no:s.siteNo, client:s.client, name:s.name,
+      address:s.address, structure:s.structure, start_date:s.start,
+      completion_date:s.completion, handover_date:s.handover, total_amount:s.totalAmount
+    });
+    if(e1) throw e1;
+    setSynced();
+  } catch(e){ setSyncError(); throw e; }
+}
+
+async function saveBilling(siteId, b){
+  setSyncing();
+  try{
+    const { error } = await sb.from('billings').upsert({
+      id:b.id, site_id:siteId, label:b.label, due_date:b.dueDate,
+      amount:b.amount, note:b.note, issued_date:b.issuedDate||null, paid_date:b.paidDate||null
+    });
+    if(error) throw error;
+    setSynced();
+  } catch(e){ setSyncError(); throw e; }
+}
+
+async function saveDoc(siteId, d){
+  setSyncing();
+  try{
+    const { error } = await sb.from('docs').upsert({
+      id:d.id, site_id:siteId, type:d.type, name:d.name, date:d.date, notes:d.notes
+    });
+    if(error) throw error;
+    setSynced();
+  } catch(e){ setSyncError(); throw e; }
+}
+
+async function deleteSiteDB(id){
+  setSyncing();
+  const { error } = await sb.from('sites').delete().eq('id',id);
+  if(error){ setSyncError(); throw error; }
+  setSynced();
+}
+async function deleteBillingDB(id){
+  setSyncing();
+  const { error } = await sb.from('billings').delete().eq('id',id);
+  if(error){ setSyncError(); throw error; }
+  setSynced();
+}
+async function deleteDocDB(id){
+  setSyncing();
+  const { error } = await sb.from('docs').delete().eq('id',id);
+  if(error){ setSyncError(); throw error; }
+  setSynced();
+}
+
+// ─── REALTIME ───
+function subscribeRealtime(){
+  sb.channel('db-changes')
+    .on('postgres_changes',{event:'*',schema:'public'},(payload)=>{
+      loadFromDB().then(()=>render()).catch(console.error);
+    })
+    .subscribe();
+}
+
+// ─── HELPERS ───
+function daysBetween(a,b){
+  const da=new Date(a);da.setHours(0,0,0,0);
+  const db=new Date(b);db.setHours(0,0,0,0);
+  return Math.round((db-da)/(1000*60*60*24));
+}
+function fmtDate(d){
+  if(!d) return '—';
+  const dt=typeof d==='string'?new Date(d):d;
+  return dt.getFullYear()+'年'+(dt.getMonth()+1)+'月'+dt.getDate()+'日';
+}
+function fmtMoney(n){ if(!n) return '—'; return '¥'+n.toLocaleString('ja-JP'); }
+function uid(){ return crypto.randomUUID ? crypto.randomUUID() : '_'+Math.random().toString(36).substr(2,12); }
+function calcProgress(s){
+  const start=new Date(s.start),end=new Date(s.completion);
+  return Math.min(100,Math.max(0,Math.round((TODAY-start)/(end-start)*100)));
+}
+function isCompleted(s){ return s.billings.length>0 && s.billings.every(b=>b.paidDate); }
+function sortedSites(list){
+  return [...list].sort((a,b)=>{
+    const na=a.siteNo?a.siteNo.replace(/[^0-9]/g,''):'';
+    const nb=b.siteNo?b.siteNo.replace(/[^0-9]/g,''):'';
+    if(na&&nb) return parseInt(na)-parseInt(nb);
+    if(na) return -1; if(nb) return 1;
+    return a.name.localeCompare(b.name,'ja');
+  });
+}
+
+// ─── ALERTS ───
+function getAlerts(){
+  const out=[];
+  sites.forEach(s=>{
+    const handover=new Date(s.handover||s.completion);
+    const warnAt=new Date(handover); warnAt.setDate(warnAt.getDate()-14);
+    if(TODAY>=warnAt&&TODAY<=handover)
+      out.push({siteId:s.id,type:'handover',msg:`「${s.name}」引渡まであと${daysBetween(TODAY,handover)}日 — 最終請求書を確認してください`});
+    s.billings.forEach(b=>{
+      if(b.issuedDate&&!b.paidDate){
+        const issued=new Date(b.issuedDate);
+        const warnAt2=new Date(issued); warnAt2.setDate(warnAt2.getDate()+30);
+        if(TODAY>=warnAt2)
+          out.push({siteId:s.id,type:'unpaid',msg:`「${s.name}」${b.label} — 請求書発行から${daysBetween(issued,TODAY)}日経過しても入金がありません`});
+      }
+      if(b.issuedDate) return;
+      const due=new Date(b.dueDate);
+      if(TODAY>due){
+        out.push({siteId:s.id,type:'overdue',msg:`「${s.name}」${b.label} の請求期限が超過しています（${fmtDate(b.dueDate)}）`});
+      } else {
+        const warn=new Date(due); warn.setDate(warn.getDate()-14);
+        if(TODAY>=warn)
+          out.push({siteId:s.id,type:'warn',msg:`「${s.name}」${b.label} の請求期限まであと${daysBetween(TODAY,due)}日`});
+      }
+    });
+  });
+  return out;
+}
+
+// ─── RENDER ───
+function switchTab(t){ currentTab=t; openSiteId=null; render(); }
+
+function render(){
+  const area=document.getElementById('main-content-area');
+  const alerts=getAlerts();
+  const activeSites=sites.filter(s=>!isCompleted(s));
+  const doneSites=sites.filter(s=>isCompleted(s));
+  const displaySites=currentTab==='active'?activeSites:doneSites;
+  const pending=activeSites.reduce((a,s)=>a+s.billings.filter(b=>!b.issuedDate).length,0);
+  const unpaid=activeSites.reduce((a,s)=>a+s.billings.filter(b=>b.issuedDate&&!b.paidDate).length,0);
+
+  document.getElementById('site-count-label').textContent=sites.length+'件の現場を管理中';
+
+  let html='';
+  html+=`<div class="tab-bar">
+    <button class="tab-btn${currentTab==='active'?' active':''}" onclick="switchTab('active')">🏗️ 施工中<span class="tab-count">${activeSites.length}</span></button>
+    <button class="tab-btn tab-done${currentTab==='done'?' active':''}" onclick="switchTab('done')">✅ 完了<span class="tab-count">${doneSites.length}</span></button>
+  </div>`;
+
+  if(currentTab==='active'&&activeSites.length>0){
+    html+=`<div class="summary-bar">
+      <div class="sum-card"><div class="sum-lbl">施工中現場</div><div class="sum-val" style="color:var(--navy)">${activeSites.length}</div><div class="sum-sub">件</div></div>
+      <div class="sum-card"><div class="sum-lbl">未請求</div><div class="sum-val" style="color:${pending?'var(--amber)':'var(--green)'}">${pending}</div><div class="sum-sub">件</div></div>
+      <div class="sum-card"><div class="sum-lbl">入金待ち</div><div class="sum-val" style="color:${unpaid?'var(--blue)':'var(--green)'}">${unpaid}</div><div class="sum-sub">件</div></div>
+    </div>`;
+  }
+
+  if(currentTab==='active'&&alerts.length){
+    html+='<div class="alerts-area">';
+    alerts.forEach(a=>{
+      const cls=(a.type==='overdue'||a.type==='unpaid')?'alert-danger':'alert-warn';
+      const ico=a.type==='overdue'?'🔴':a.type==='unpaid'?'💴':'🔔';
+      html+=`<div class="alert ${cls}"><span class="alert-icon">${ico}</span><span>${a.msg}</span></div>`;
+    });
+    html+='</div>';
+  }
+
+  if(!displaySites.length){
+    const msg=currentTab==='active'
+      ?'<p>施工中の現場はありません</p><small>「＋ 現場を追加」から登録してください</small>'
+      :'<p>完了した現場はありません</p><small>全請求が入金済になると自動的にここへ移動します</small>';
+    html+=`<div class="empty-state"><div class="es-icon">${currentTab==='active'?'🏗️':'✅'}</div>${msg}</div>`;
+  } else {
+    sortedSites(displaySites).forEach(s=>{ html+=renderSiteCard(s,alerts); });
+  }
+
+  area.innerHTML=html;
+}
+
+function renderSiteCard(s,alerts){
+  const siteAlerts=alerts.filter(a=>a.siteId===s.id);
+  const isOpen=openSiteId===s.id;
+  const handover=new Date(s.handover||s.completion);
+  const daysLeft=daysBetween(TODAY,handover);
+  const pct=calcProgress(s);
+  const unpaid=s.billings.filter(b=>!b.issuedDate).length;
+  const total=s.billings.length;
+  let statusBadge='';
+  if(daysLeft<0) statusBadge='<span class="badge badge-done">✓ 完了</span>';
+  else if(daysLeft<=14) statusBadge='<span class="badge badge-warn">⚠ 引渡間近</span>';
+  else statusBadge='<span class="badge badge-active">● 施工中</span>';
+
+  let body='';
+  if(isOpen){
+    body=`<div class="card-body">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+        <div class="section-label" style="margin-bottom:0">📋 基本情報</div>
+        <button class="btn btn-ghost btn-sm" onclick="openEditSite('${s.id}')">✏️ 編集</button>
+      </div>
+      <div class="info-grid">
+        <div class="info-item"><div class="lbl">現場番号</div><div class="val">${s.siteNo||'—'}</div></div>
+        <div class="info-item"><div class="lbl">発注者名</div><div class="val" style="font-size:12px">${s.client||'—'}</div></div>
+        <div class="info-item"><div class="lbl">工事場所</div><div class="val" style="font-size:12px">${s.address||'—'}</div></div>
+        <div class="info-item"><div class="lbl">構造・規模</div><div class="val" style="font-size:12px">${s.structure||'—'}</div></div>
+        <div class="info-item"><div class="lbl">着工</div><div class="val">${fmtDate(s.start)}</div></div>
+        <div class="info-item"><div class="lbl">竣工予定</div><div class="val">${fmtDate(s.completion)}</div></div>
+        <div class="info-item"><div class="lbl">引渡予定</div><div class="val" style="color:var(--navy);font-weight:700">${fmtDate(s.handover)}</div></div>
+        <div class="info-item"><div class="lbl">請負代金合計（税込）</div><div class="val" style="color:var(--navy)">${fmtMoney(s.totalAmount)}</div></div>
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+        <div class="progress-meta"><span>着工 ${fmtDate(s.start)}</span><span>工期進捗 ${pct}%</span><span>竣工 ${fmtDate(s.completion)}</span></div>
+      </div>
+      <div class="divider"></div>
+      <div class="section-label">📄 請求スケジュール</div>
+      <div class="billing-wrap">
+        <table>
+          <thead><tr><th>請求項目</th><th>期限日</th><th>金額</th><th>ステータス</th><th></th></tr></thead>
+          <tbody>${s.billings.map(b=>renderBillingRow(s.id,b)).join('')}</tbody>
+        </table>
+      </div>
+      <button class="btn btn-ghost btn-sm" onclick="openAddBilling('${s.id}')">＋ 請求項目を追加</button>
+      <div class="divider"></div>
+      <div class="section-label">📁 関連書類</div>
+      <div class="doc-list">
+        ${s.docs.map(d=>`<div class="doc-row"><span style="font-size:16px">📄</span><span class="doc-type-pill ${d.type==='original'?'pill-original':'pill-change'}">${d.type==='original'?'原契約':'覚書'}</span><span class="doc-name">${d.name}</span><span class="doc-date">${fmtDate(d.date)}</span><button class="btn btn-ghost btn-xs" onclick="rmDoc('${s.id}','${d.id}')">✕</button></div>`).join('')}
+      </div>
+      <button class="btn btn-ghost btn-sm" onclick="openAddDoc('${s.id}')">＋ 覚書・書類を追加</button>
+      <div class="divider"></div>
+      <div style="display:flex;justify-content:flex-end">
+        <button class="btn btn-danger btn-sm" onclick="rmSite('${s.id}')">🗑 現場を削除</button>
+      </div>
+    </div>`;
+  }
+
+  return `<div class="card${siteAlerts.length?' card-alert':''}">
+    <div class="card-header" onclick="toggleSite('${s.id}')">
+      <div class="card-icon${siteAlerts.length?' card-icon-warn':''}">🏗️</div>
+      <div class="card-info">
+        <div class="card-name">${s.siteNo?`<span style="display:inline-block;background:var(--navy);color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:4px;margin-right:6px;vertical-align:middle">No.${s.siteNo}</span>`:''}${s.name}</div>
+        <div class="card-meta">引渡: ${fmtDate(s.handover||s.completion)} ／ 未請求: ${unpaid}/${total}件</div>
+      </div>
+      <div class="card-right">${statusBadge}<span class="chevron${isOpen?' open':''}">⌄</span></div>
+    </div>
+    ${body}
+  </div>`;
+}
+
+function renderBillingRow(siteId,b){
+  const due=new Date(b.dueDate);
+  const isOverdue=!b.issuedDate&&TODAY>due;
+  const isUpcoming=!b.issuedDate&&!isOverdue&&daysBetween(TODAY,due)<=14;
+  const rowCls=isOverdue?'row-overdue':isUpcoming?'row-upcoming':'';
+  let statusHtml='';
+  if(b.paidDate){
+    statusHtml=`<div class="status-actions"><span class="chip chip-paid">✓ 入金済</span><div class="date-log">${fmtDate(b.paidDate)}</div><button class="btn btn-ghost btn-xs" style="color:var(--text-3)" onclick="unmarkPaid('${siteId}','${b.id}')">↩ 取消</button></div>`;
+  } else if(b.issuedDate){
+    statusHtml=`<div class="status-actions"><span class="chip chip-issued">📤 発行済</span><div class="date-log">${fmtDate(b.issuedDate)}</div><button class="btn btn-success btn-xs" onclick="markPaid('${siteId}','${b.id}')">入金確認</button><button class="btn btn-ghost btn-xs" style="color:var(--text-3)" onclick="unmarkIssued('${siteId}','${b.id}')">↩ 取消</button></div>`;
+  } else {
+    const chip=isOverdue?`<span class="chip chip-overdue">⚠ 期限超過</span>`:`<span class="chip chip-pending">未発行</span>`;
+    statusHtml=`<div class="status-actions">${chip}<button class="btn btn-navy btn-xs" onclick="markIssued('${siteId}','${b.id}')">発行済にする</button></div>`;
+  }
+  return `<tr class="${rowCls}"><td><div class="billing-label">${b.label}</div><div class="billing-note">${b.note||''}</div></td><td style="white-space:nowrap;font-size:13px">${fmtDate(b.dueDate)}</td><td class="amount-cell">${fmtMoney(b.amount)}</td><td>${statusHtml}</td><td><button class="btn btn-ghost btn-xs" onclick="rmBilling('${siteId}','${b.id}')">✕</button></td></tr>`;
+}
+
+function toggleSite(id){ openSiteId=openSiteId===id?null:id; render(); }
+
+// ─── ACTIONS ───
+async function markIssued(siteId,bId){
+  const s=sites.find(x=>x.id===siteId),b=s.billings.find(x=>x.id===bId);
+  b.issuedDate=new Date().toISOString().split('T')[0];
+  render(); await saveBilling(siteId,b);
+}
+async function markPaid(siteId,bId){
+  const s=sites.find(x=>x.id===siteId),b=s.billings.find(x=>x.id===bId);
+  b.paidDate=new Date().toISOString().split('T')[0];
+  render(); await saveBilling(siteId,b);
+}
+async function unmarkIssued(siteId,bId){
+  if(!confirm('発行済を取り消しますか？')) return;
+  const s=sites.find(x=>x.id===siteId),b=s.billings.find(x=>x.id===bId);
+  b.issuedDate=null; render(); await saveBilling(siteId,b);
+}
+async function unmarkPaid(siteId,bId){
+  if(!confirm('入金済を取り消しますか？')) return;
+  const s=sites.find(x=>x.id===siteId),b=s.billings.find(x=>x.id===bId);
+  b.paidDate=null; render(); await saveBilling(siteId,b);
+}
+async function rmBilling(siteId,bId){
+  if(!confirm('この請求項目を削除しますか？')) return;
+  const s=sites.find(x=>x.id===siteId);
+  s.billings=s.billings.filter(b=>b.id!==bId);
+  render(); await deleteBillingDB(bId);
+}
+async function rmDoc(siteId,dId){
+  if(!confirm('この書類を削除しますか？')) return;
+  const s=sites.find(x=>x.id===siteId);
+  s.docs=s.docs.filter(d=>d.id!==dId);
+  render(); await deleteDocDB(dId);
+}
+async function rmSite(id){
+  if(!confirm('この現場を削除しますか？（関連する請求・書類もすべて削除されます）')) return;
+  sites=sites.filter(s=>s.id!==id);
+  if(openSiteId===id) openSiteId=null;
+  render(); await deleteSiteDB(id);
+}
+
+// ─── MODALS ───
+function openModal(){ document.getElementById('modal-overlay').style.display='flex'; }
+function closeModal(){ document.getElementById('modal-overlay').style.display='none'; }
+function handleOverlayClick(e){ if(e.target===document.getElementById('modal-overlay')) closeModal(); }
+
+// 設定
+function openSettings(){
+  document.getElementById('modal-title').textContent='設定';
+  document.getElementById('modal-body').innerHTML=`
+    <div class="field"><label>Supabase URL</label><input id="cfg-url" value="${cfg.sbUrl||''}" type="url"></div>
+    <div class="field"><label>Supabase anon key</label><input id="cfg-key" value="${cfg.sbKey||''}" type="password"></div>
+    <div class="field"><label>Anthropic APIキー</label><input id="cfg-akey" value="${cfg.anthropicKey||''}" type="password"></div>`;
+  document.getElementById('modal-foot').innerHTML=`<button class="btn btn-ghost" onclick="closeModal()">キャンセル</button><button class="btn btn-navy" onclick="applySettings()">保存して再読込</button>`;
+  openModal();
+}
+function applySettings(){
+  cfg.sbUrl=document.getElementById('cfg-url').value.trim();
+  cfg.sbKey=document.getElementById('cfg-key').value.trim();
+  cfg.anthropicKey=document.getElementById('cfg-akey').value.trim();
+  saveCfg(); location.reload();
+}
+
+// 現場追加
+function openAddModal(){
+  document.getElementById('modal-title').textContent='新規現場を追加';
+  document.getElementById('modal-body').innerHTML=`
+    <div class="alert alert-info"><span class="alert-icon">🤖</span><span>契約書PDFをアップロードすると、AIが情報を自動で読み取ります。</span></div>
+    <div class="upload-zone" id="uz-main" onclick="document.getElementById('pdf-main').click()"
+      ondragover="event.preventDefault();this.classList.add('dragging')"
+      ondragleave="this.classList.remove('dragging')"
+      ondrop="this.classList.remove('dragging');handleMainDrop(event)">
+      <div class="uz-icon">📤</div><p>契約書PDFをクリックまたはドラッグ</p><small>自動解析します</small>
+      <input type="file" id="pdf-main" accept=".pdf" style="display:none" onchange="handleMainFile(this.files[0])">
+    </div>
+    <div id="ai-status-main"></div>
+    <div class="field-row">
+      <div class="field"><label>現場番号</label><input id="fn-siteno" placeholder="例: 743"></div>
+      <div class="field"><label>工事名 *</label><input id="fn-name" placeholder="(仮称)○○プロジェクト新築工事"></div>
+    </div>
+    <div class="field"><label>発注者名</label><input id="fn-client" placeholder="例：株式会社〇〇"></div>
+    <div class="field"><label>工事場所</label><input id="fn-addr" placeholder="大阪府大阪市..."></div>
+    <div class="field"><label>構造・規模</label><input id="fn-struct" placeholder="RC造 XX戸 XX階建て"></div>
+    <div class="field-row">
+      <div class="field"><label>着工日</label><input type="date" id="fn-start"></div>
+      <div class="field"><label>竣工予定日</label><input type="date" id="fn-completion"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>引渡予定日</label><input type="date" id="fn-handover"></div>
+      <div class="field"><label>請負代金合計（税込）</label><input type="number" id="fn-amount" placeholder="例: 4941200000"></div>
+    </div>
+    <div><div class="section-label" style="margin-bottom:8px">📄 請求スケジュール</div><div id="billing-rows-main"></div>
+    <button class="btn btn-ghost btn-sm" onclick="addBillingRow('billing-rows-main')">＋ 請求項目を追加</button></div>`;
+  document.getElementById('modal-foot').innerHTML=`<button class="btn btn-ghost" onclick="closeModal()">キャンセル</button><button class="btn btn-navy" onclick="saveNewSite()">保存</button>`;
+  openModal();
+}
+
+function addBillingRow(cid,label='',dueDate='',amount=''){
+  const id=uid(); const row=document.createElement('div');
+  row.id=id; row.style.cssText='display:grid;grid-template-columns:1.8fr 1.1fr 1.2fr auto;gap:6px;align-items:end;margin-bottom:8px';
+  row.innerHTML=`<div class="field"><label>項目名</label><input style="font-size:13px" placeholder="例：着工時（10%）" value="${label}"></div><div class="field"><label>期限日</label><input type="date" style="font-size:13px" value="${dueDate}"></div><div class="field"><label>金額（税込）</label><input type="number" style="font-size:13px" placeholder="0" value="${amount}"></div><button onclick="document.getElementById('${id}').remove()" class="btn btn-ghost btn-sm" style="margin-bottom:1px;padding:9px 10px">✕</button>`;
+  document.getElementById(cid).appendChild(row);
+}
+
+function handleMainDrop(e){ e.preventDefault(); const f=e.dataTransfer.files[0]; if(f) handleMainFile(f); }
+
+async function handleMainFile(file){
+  if(!file||file.type!=='application/pdf'){ alert('PDFファイルを選択してください'); return; }
+  const st=document.getElementById('ai-status-main');
+  st.innerHTML=`<div class="ai-box ai-analyzing"><div class="spinner"></div>AIがPDFを解析中...</div>`;
+  try{
+    const b64=await toBase64(file);
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':cfg.anthropicKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-calls':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1200,messages:[{role:'user',content:[
+        {type:'document',source:{type:'base64',media_type:'application/pdf',data:b64}},
+        {type:'text',text:`この工事請負契約書PDFから以下の情報をJSONのみで返してください。コードブロック・説明文不要。
+{"name":"工事名","address":"工事場所","structure":"構造規模","start":"YYYY-MM-DD","completion":"YYYY-MM-DD","handover":"YYYY-MM-DD","totalAmount":税込合計数値,"billings":[{"label":"請求名","dueDate":"YYYY-MM-DD","amount":税込金額数値,"note":"備考"}]}`}
+      ]}]})
+    });
+    if(!res.ok) throw new Error('API Error: '+res.status);
+    const data=await res.json();
+    const r=JSON.parse(data.content.map(c=>c.text||'').join('').replace(/```json|```/g,'').trim());
+    if(r.name) document.getElementById('fn-name').value=r.name;
+    if(r.address) document.getElementById('fn-addr').value=r.address;
+    if(r.structure) document.getElementById('fn-struct').value=r.structure;
+    if(r.start) document.getElementById('fn-start').value=r.start;
+    if(r.completion) document.getElementById('fn-completion').value=r.completion;
+    if(r.handover) document.getElementById('fn-handover').value=r.handover;
+    if(r.totalAmount) document.getElementById('fn-amount').value=r.totalAmount;
+    document.getElementById('billing-rows-main').innerHTML='';
+    if(r.billings?.length) r.billings.forEach(b=>addBillingRow('billing-rows-main',b.label||'',b.dueDate||'',b.amount||''));
+    st.innerHTML=`<div class="ai-box ai-done">✅ 解析完了 — 内容を確認・修正して保存してください</div>`;
+  } catch(err){
+    st.innerHTML=`<div class="ai-box ai-error">⚠ 解析失敗。手動で入力してください。（${err.message}）</div>`;
+  }
+}
+
+async function saveNewSite(){
+  const name=document.getElementById('fn-name').value.trim();
+  if(!name){ alert('工事名を入力してください'); return; }
+  const rows=document.querySelectorAll('#billing-rows-main > div');
+  const billings=[];
+  rows.forEach(row=>{
+    const ins=row.querySelectorAll('input');
+    if(ins[0]?.value) billings.push({id:uid(),label:ins[0].value,dueDate:ins[1]?.value||'',amount:parseInt(ins[2]?.value||'0'),note:'',issuedDate:null,paidDate:null});
+  });
+  const s={id:uid(),siteNo:document.getElementById('fn-siteno').value.trim(),client:document.getElementById('fn-client').value.trim(),name,address:document.getElementById('fn-addr').value,structure:document.getElementById('fn-struct').value,start:document.getElementById('fn-start').value,completion:document.getElementById('fn-completion').value,handover:document.getElementById('fn-handover').value,totalAmount:parseInt(document.getElementById('fn-amount').value||'0'),docs:[],billings};
+  sites.push(s); openSiteId=s.id;
+  closeModal(); render();
+  try{
+    await saveSite(s);
+    for(const b of billings) await saveBilling(s.id,b);
+  } catch(e){ alert('保存に失敗しました: '+e.message); }
+}
+
+// 基本情報編集
+function openEditSite(siteId){
+  const s=sites.find(x=>x.id===siteId);
+  document.getElementById('modal-title').textContent='基本情報を編集';
+  document.getElementById('modal-body').innerHTML=`
+    <div class="field-row">
+      <div class="field"><label>現場番号</label><input id="es-siteno" value="${s.siteNo||''}"></div>
+      <div class="field"><label>工事名 *</label><input id="es-name" value="${s.name||''}"></div>
+    </div>
+    <div class="field"><label>発注者名</label><input id="es-client" value="${s.client||''}" placeholder="例：株式会社〇〇"></div>
+    <div class="field"><label>工事場所</label><input id="es-addr" value="${s.address||''}"></div>
+    <div class="field"><label>構造・規模</label><input id="es-struct" value="${s.structure||''}"></div>
+    <div class="field-row">
+      <div class="field"><label>着工日</label><input type="date" id="es-start" value="${s.start||''}"></div>
+      <div class="field"><label>竣工予定日</label><input type="date" id="es-completion" value="${s.completion||''}"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>引渡予定日</label><input type="date" id="es-handover" value="${s.handover||''}"></div>
+      <div class="field"><label>請負代金合計（税込）</label><input type="number" id="es-amount" value="${s.totalAmount||''}"></div>
+    </div>`;
+  document.getElementById('modal-foot').innerHTML=`<button class="btn btn-ghost" onclick="closeModal()">キャンセル</button><button class="btn btn-navy" onclick="saveEditSite('${siteId}')">保存</button>`;
+  openModal();
+}
+async function saveEditSite(siteId){
+  const name=document.getElementById('es-name').value.trim();
+  if(!name){ alert('工事名を入力してください'); return; }
+  const s=sites.find(x=>x.id===siteId);
+  s.siteNo=document.getElementById('es-siteno').value.trim();
+  s.name=name; s.client=document.getElementById('es-client').value.trim();
+  s.address=document.getElementById('es-addr').value;
+  s.structure=document.getElementById('es-struct').value;
+  s.start=document.getElementById('es-start').value;
+  s.completion=document.getElementById('es-completion').value;
+  s.handover=document.getElementById('es-handover').value;
+  s.totalAmount=parseInt(document.getElementById('es-amount').value||'0');
+  closeModal(); render(); await saveSite(s);
+}
+
+// 請求項目追加
+function openAddBilling(siteId){
+  document.getElementById('modal-title').textContent='請求項目を追加';
+  document.getElementById('modal-body').innerHTML=`
+    <div class="field"><label>請求項目名 *</label><input id="ab-label" placeholder="例：引渡時（80%）"></div>
+    <div class="field-row">
+      <div class="field"><label>請求期限日</label><input type="date" id="ab-date"></div>
+      <div class="field"><label>金額（税込）</label><input type="number" id="ab-amount" placeholder="0"></div>
+    </div>
+    <div class="field"><label>備考</label><input id="ab-note" placeholder="例：覚書No.xxx による"></div>`;
+  document.getElementById('modal-foot').innerHTML=`<button class="btn btn-ghost" onclick="closeModal()">キャンセル</button><button class="btn btn-navy" onclick="saveAddBilling('${siteId}')">追加</button>`;
+  openModal();
+}
+async function saveAddBilling(siteId){
+  const label=document.getElementById('ab-label').value.trim();
+  if(!label){ alert('項目名を入力してください'); return; }
+  const s=sites.find(x=>x.id===siteId);
+  const b={id:uid(),label,dueDate:document.getElementById('ab-date').value,amount:parseInt(document.getElementById('ab-amount').value||'0'),note:document.getElementById('ab-note').value,issuedDate:null,paidDate:null};
+  s.billings.push(b); closeModal(); render(); await saveBilling(siteId,b);
+}
+
+// 書類追加
+function openAddDoc(siteId){
+  document.getElementById('modal-title').textContent='書類を追加';
+  document.getElementById('modal-body').innerHTML=`
+    <div class="alert alert-info"><span class="alert-icon">🤖</span><span>覚書PDFをアップロードするとAIが内容を解析し、工期変更・追加請求を提案します。</span></div>
+    <div class="upload-zone" id="uz-doc" onclick="document.getElementById('pdf-doc').click()"
+      ondragover="event.preventDefault();this.classList.add('dragging')"
+      ondragleave="this.classList.remove('dragging')"
+      ondrop="this.classList.remove('dragging');handleDocDrop(event,'${siteId}')">
+      <div class="uz-icon">📤</div><p>覚書・変更書類のPDFをアップロード</p>
+      <input type="file" id="pdf-doc" accept=".pdf" style="display:none" onchange="handleDocFile(this.files[0],'${siteId}')">
+    </div>
+    <div id="ai-status-doc"></div>
+    <div class="field-row">
+      <div class="field"><label>書類種別</label><select id="doc-type"><option value="change">覚書・変更書類</option><option value="original">原契約書</option></select></div>
+      <div class="field"><label>締結日</label><input type="date" id="doc-date"></div>
+    </div>
+    <div class="field"><label>書類名 *</label><input id="doc-name" placeholder="例：変更覚書 No.743-7"></div>
+    <div class="field"><label>変更内容のメモ</label><input id="doc-notes" placeholder="例：工期延長・追加工事 +¥550,000,000"></div>
+    <div id="doc-billing-suggest" style="display:none">
+      <div class="section-label" style="margin-top:4px">追加する請求項目（AI提案）</div>
+      <div id="billing-rows-doc"></div>
+      <button class="btn btn-ghost btn-sm" onclick="addBillingRow('billing-rows-doc')">＋ 請求項目を追加</button>
+    </div>`;
+  document.getElementById('modal-foot').innerHTML=`<button class="btn btn-ghost" onclick="closeModal()">キャンセル</button><button class="btn btn-navy" onclick="saveDocModal('${siteId}')">保存</button>`;
+  openModal();
+}
+function handleDocDrop(e,sid){ e.preventDefault(); const f=e.dataTransfer.files[0]; if(f) handleDocFile(f,sid); }
+async function handleDocFile(file,siteId){
+  if(!file) return;
+  const st=document.getElementById('ai-status-doc');
+  st.innerHTML=`<div class="ai-box ai-analyzing"><div class="spinner"></div>AIが覚書を解析中...</div>`;
+  try{
+    const b64=await toBase64(file);
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':cfg.anthropicKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-calls':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:800,messages:[{role:'user',content:[
+        {type:'document',source:{type:'base64',media_type:'application/pdf',data:b64}},
+        {type:'text',text:`この覚書PDFから以下をJSONのみで返してください。コードブロック不要。
+{"docName":"書類名","docDate":"YYYY-MM-DD","docNotes":"変更内容要約","newHandover":"YYYY-MM-DDまたはnull","newBillings":[{"label":"請求名","dueDate":"YYYY-MM-DD","amount":税込金額,"note":"備考"}]}`}
+      ]}]})
+    });
+    if(!res.ok) throw new Error('API Error: '+res.status);
+    const data=await res.json();
+    const r=JSON.parse(data.content.map(c=>c.text||'').join('').replace(/```json|```/g,'').trim());
+    if(r.docName) document.getElementById('doc-name').value=r.docName;
+    if(r.docDate) document.getElementById('doc-date').value=r.docDate;
+    if(r.docNotes) document.getElementById('doc-notes').value=r.docNotes;
+    if(r.newHandover){
+      const s=sites.find(x=>x.id===siteId);
+      if(s&&confirm(`引渡予定日を ${fmtDate(r.newHandover)} に更新しますか？`)){ s.handover=r.newHandover; await saveSite(s); }
+    }
+    document.getElementById('billing-rows-doc').innerHTML='';
+    if(r.newBillings?.length) r.newBillings.forEach(b=>addBillingRow('billing-rows-doc',b.label||'',b.dueDate||'',b.amount||''));
+    document.getElementById('doc-billing-suggest').style.display='block';
+    st.innerHTML=`<div class="ai-box ai-done">✅ 解析完了${r.docNotes?` — ${r.docNotes}`:''}</div>`;
+  } catch(err){
+    st.innerHTML=`<div class="ai-box ai-error">⚠ 解析失敗。手動で入力してください。（${err.message}）</div>`;
+  }
+}
+async function saveDocModal(siteId){
+  const name=document.getElementById('doc-name').value.trim();
+  if(!name){ alert('書類名を入力してください'); return; }
+  const s=sites.find(x=>x.id===siteId);
+  const d={id:uid(),type:document.getElementById('doc-type').value,name,date:document.getElementById('doc-date').value,notes:document.getElementById('doc-notes').value};
+  s.docs.push(d);
+  const rows=document.querySelectorAll('#billing-rows-doc > div');
+  const newBillings=[];
+  rows.forEach(row=>{
+    const ins=row.querySelectorAll('input');
+    if(ins[0]?.value){ const b={id:uid(),label:ins[0].value,dueDate:ins[1]?.value||'',amount:parseInt(ins[2]?.value||'0'),note:'覚書による追加',issuedDate:null,paidDate:null}; s.billings.push(b); newBillings.push(b); }
+  });
+  closeModal(); render();
+  await saveDoc(siteId,d);
+  for(const b of newBillings) await saveBilling(siteId,b);
+}
+
+function toBase64(file){ return new Promise((res,rej)=>{ const r=new FileReader(); r.onload=()=>res(r.result.split(',')[1]); r.onerror=rej; r.readAsDataURL(file); }); }
+
+// ─── BOOT ───
+async function boot(){
+  loadCfg();
+  if(!cfg.sbUrl||!cfg.sbKey){
+    document.getElementById('loading-screen').style.display='none';
+    document.getElementById('setup-screen').style.display='flex';
+    return;
+  }
+  if(!initSupabase()){
+    document.getElementById('loading-screen').style.display='none';
+    document.getElementById('setup-screen').style.display='flex';
+    return;
+  }
+  try{
+    await loadFromDB();
+    subscribeRealtime();
+    document.getElementById('loading-screen').style.display='none';
+    document.getElementById('main-app').style.display='flex';
+    render();
+  } catch(e){
+    document.getElementById('loading-screen').innerHTML=`<div style="color:var(--red);text-align:center;padding:20px"><p style="font-size:18px;margin-bottom:8px">⚠ 接続エラー</p><p style="font-size:13px;color:var(--text-2);margin-bottom:16px">${e.message}</p><button class="btn btn-navy" onclick="openSettings();document.getElementById('loading-screen').style.display='none';document.getElementById('main-app').style.display='flex';">設定を確認する</button></div>`;
+    document.getElementById('main-app').style.display='flex';
+  }
+}
+
+boot();
+</script>
+</body>
+</html>
