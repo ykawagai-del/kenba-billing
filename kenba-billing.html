@@ -24,26 +24,29 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
 .topbar{background:var(--navy);color:#fff;padding:0 20px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;box-shadow:0 2px 8px rgba(0,0,0,.2)}
 .topbar-left{display:flex;align-items:center;gap:10px}
 .logo{width:32px;height:32px;background:rgba(255,255,255,.12);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px}
-.app-name{font-size:16px;font-weight:600;letter-spacing:.02em}
+.app-name{font-size:16px;font-weight:600}
 .app-sub{font-size:11px;opacity:.6;margin-top:1px}
+.user-info{display:flex;align-items:center;gap:8px;font-size:12px;opacity:.8}
+.role-badge{font-size:10px;padding:2px 7px;border-radius:20px;font-weight:700;background:rgba(255,255,255,.2)}
 .main{flex:1;padding:16px;max-width:900px;width:100%;margin:0 auto;display:flex;flex-direction:column;gap:12px}
 .btn{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border-radius:var(--radius-sm);font-size:13px;font-weight:500;cursor:pointer;border:none;transition:all .15s;white-space:nowrap;font-family:var(--font)}
 .btn-navy{background:var(--navy);color:#fff}.btn-navy:hover{background:var(--navy-dark)}
+.btn-gold{background:var(--gold);color:#fff}.btn-gold:hover{background:var(--gold-dark)}
 .btn-ghost{background:transparent;color:var(--text-2);border:1px solid var(--border)}.btn-ghost:hover{background:var(--bg)}
-.btn-danger{background:var(--red-bg);color:var(--red);border:1px solid var(--red-bd)}.btn-danger:hover{background:#fce0e0}
-.btn-success{background:var(--green-bg);color:var(--green);border:1px solid var(--green-bd)}.btn-success:hover{background:#d4eedd}
+.btn-danger{background:var(--red-bg);color:var(--red);border:1px solid var(--red-bd)}
+.btn-success{background:var(--green-bg);color:var(--green);border:1px solid var(--green-bd)}
 .btn-sm{padding:5px 10px;font-size:12px;border-radius:6px}
 .btn-xs{padding:3px 8px;font-size:11px;border-radius:5px}
-.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn:disabled{opacity:.4;cursor:not-allowed}
 .alert{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border-radius:var(--radius-sm);font-size:13px;border:1px solid}
 .alert-warn{background:var(--amber-bg);color:var(--amber);border-color:var(--amber-bd)}
 .alert-danger{background:var(--red-bg);color:var(--red);border-color:var(--red-bd)}
 .alert-info{background:var(--blue-bg);color:var(--blue);border-color:var(--blue-bd)}
-.alert-icon{font-size:18px;flex-shrink:0;line-height:1}
+.alert-success{background:var(--green-bg);color:var(--green);border-color:var(--green-bd)}
 .alerts-area{display:flex;flex-direction:column;gap:8px}
-.tab-bar{display:flex;gap:0;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
-.tab-btn{flex:1;padding:11px 0;font-size:13px;font-weight:600;border:none;background:transparent;cursor:pointer;color:var(--text-2);transition:all .15s;font-family:var(--font);display:flex;align-items:center;justify-content:center;gap:6px}
-.tab-btn:first-child{border-right:1px solid var(--border)}
+.tab-bar{display:flex;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+.tab-btn{flex:1;padding:11px 0;font-size:13px;font-weight:600;border:none;background:transparent;cursor:pointer;color:var(--text-2);transition:all .15s;font-family:var(--font);display:flex;align-items:center;justify-content:center;gap:6px;border-right:1px solid var(--border)}
+.tab-btn:last-child{border-right:none}
 .tab-btn.active{background:var(--navy);color:#fff}
 .tab-btn .tab-count{font-size:11px;padding:1px 7px;border-radius:20px;font-weight:700}
 .tab-btn.active .tab-count{background:rgba(255,255,255,.2);color:#fff}
@@ -64,7 +67,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
 .card-name{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .card-meta{font-size:12px;color:var(--text-2);margin-top:2px}
 .card-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
-.chevron{font-size:18px;color:var(--text-3);transition:transform .2s;line-height:1}
+.chevron{font-size:18px;color:var(--text-3);transition:transform .2s}
 .chevron.open{transform:rotate(180deg)}
 .badge{display:inline-flex;align-items:center;gap:3px;font-size:11px;font-weight:600;padding:3px 8px;border-radius:20px;white-space:nowrap}
 .badge-active{background:var(--green-bg);color:var(--green)}
@@ -77,17 +80,25 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
 .info-item .val{font-size:13px;font-weight:500}
 .progress-wrap{margin-bottom:16px}
 .progress-bar{height:5px;background:var(--bg);border-radius:3px;overflow:hidden;border:1px solid var(--border)}
-.progress-fill{height:100%;background:linear-gradient(90deg,var(--navy),#2a6cb8);border-radius:3px;transition:width .6s}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--navy),#2a6cb8);border-radius:3px}
 .progress-meta{display:flex;justify-content:space-between;font-size:11px;color:var(--text-3);margin-top:4px}
 .divider{height:1px;background:var(--border);margin:14px 0}
+/* 契約サマリー */
+.contract-summary{background:var(--navy-light);border:1px solid var(--blue-bd);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:14px}
+.contract-row{display:flex;justify-content:space-between;align-items:center;padding:4px 0;font-size:13px}
+.contract-row.total{border-top:1px solid var(--blue-bd);margin-top:6px;padding-top:8px;font-weight:700;font-size:14px;color:var(--navy)}
+.contract-label{color:var(--text-2)}
+.contract-amount{font-weight:600;font-variant-numeric:tabular-nums}
+.add-contract-tag{font-size:10px;background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-bd);padding:1px 6px;border-radius:4px;margin-left:6px}
+/* 請求テーブル */
 .billing-wrap{overflow-x:auto;margin-bottom:12px}
 table{width:100%;border-collapse:collapse;min-width:500px}
-thead th{text-align:left;padding:8px 10px;font-size:11px;font-weight:700;color:var(--text-3);border-bottom:1px solid var(--border);text-transform:uppercase;letter-spacing:.05em;background:#fafbfc}
+thead th{text-align:left;padding:8px 10px;font-size:11px;font-weight:700;color:var(--text-3);border-bottom:1px solid var(--border);background:#fafbfc;text-transform:uppercase;letter-spacing:.05em}
 tbody td{padding:10px;border-bottom:1px solid var(--border);vertical-align:middle}
 tbody tr:last-child td{border-bottom:none}
 tbody tr.row-overdue{background:var(--red-bg)}
 tbody tr.row-upcoming{background:var(--amber-bg)}
-tbody tr:hover{background:#fafbfc}
+tbody tr.row-additional{background:#fffbf0}
 .billing-label{font-weight:500;font-size:13px}
 .billing-note{font-size:11px;color:var(--text-2);margin-top:2px}
 .date-log{font-size:10px;color:var(--text-3);margin-top:2px}
@@ -103,77 +114,91 @@ tbody tr:hover{background:#fafbfc}
 .doc-type-pill{font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px}
 .pill-original{background:var(--blue-bg);color:var(--blue)}
 .pill-change{background:var(--amber-bg);color:var(--amber)}
-.doc-name{flex:1;font-size:12px;font-weight:500}
-.doc-date{font-size:11px;color:var(--text-3);white-space:nowrap}
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:flex;align-items:flex-end;justify-content:center;padding:0;backdrop-filter:blur(2px)}
+/* モーダル */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:flex;align-items:flex-end;justify-content:center;backdrop-filter:blur(2px)}
 @media(min-width:600px){.overlay{align-items:center;padding:20px}}
 .modal{background:var(--surface);border-radius:16px 16px 0 0;width:100%;max-height:92vh;display:flex;flex-direction:column;overflow:hidden}
-@media(min-width:600px){.modal{border-radius:var(--radius);max-width:540px;max-height:88vh}}
+@media(min-width:600px){.modal{border-radius:var(--radius);max-width:560px;max-height:88vh}}
 .modal-head{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
 .modal-title{font-size:16px;font-weight:700}
-.modal-close{background:none;border:none;font-size:22px;cursor:pointer;color:var(--text-2);padding:2px;line-height:1;font-family:var(--font)}
-.modal-body{padding:20px;overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:16px}
+.modal-close{background:none;border:none;font-size:22px;cursor:pointer;color:var(--text-2);font-family:var(--font)}
+.modal-body{padding:20px;overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:14px}
 .modal-foot{padding:14px 20px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:10px;flex-shrink:0}
+/* フォーム */
 .field{display:flex;flex-direction:column;gap:5px}
 .field label{font-size:12px;font-weight:600;color:var(--text-2)}
-.field input,.field select{border:1px solid var(--border-med);border-radius:var(--radius-sm);padding:9px 11px;font-size:14px;background:var(--surface);color:var(--text);font-family:var(--font);width:100%}
+.field input,.field select,.field textarea{border:1px solid var(--border-med);border-radius:var(--radius-sm);padding:9px 11px;font-size:14px;background:var(--surface);color:var(--text);font-family:var(--font);width:100%}
 .field input:focus,.field select:focus{outline:none;border-color:var(--navy);box-shadow:0 0 0 2px rgba(26,58,92,.12)}
 .field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.upload-zone{border:2px dashed var(--border-med);border-radius:var(--radius);padding:28px;text-align:center;cursor:pointer;transition:all .2s;background:var(--bg)}
+.upload-zone{border:2px dashed var(--border-med);border-radius:var(--radius);padding:24px;text-align:center;cursor:pointer;transition:all .2s;background:var(--bg)}
 .upload-zone:hover,.upload-zone.dragging{border-color:var(--navy);background:var(--navy-light)}
-.upload-zone .uz-icon{font-size:36px;margin-bottom:8px}
+.upload-zone .uz-icon{font-size:32px;margin-bottom:8px}
 .upload-zone p{font-size:13px;color:var(--text-2)}
-.upload-zone small{font-size:11px;color:var(--text-3)}
 .ai-box{display:flex;align-items:center;gap:10px;padding:12px;border-radius:var(--radius-sm);font-size:13px}
 .ai-analyzing{background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-bd)}
 .ai-done{background:var(--green-bg);color:var(--green);border:1px solid var(--green-bd)}
 .ai-error{background:var(--red-bg);color:var(--red);border:1px solid var(--red-bd)}
 .spinner{width:16px;height:16px;border:2px solid rgba(26,92,168,.3);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite;flex-shrink:0}
 @keyframes spin{to{transform:rotate(360deg)}}
-.setup-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:24px;background:var(--bg)}
-.setup-card{background:var(--surface);border-radius:16px;padding:32px;max-width:480px;width:100%;box-shadow:var(--shadow);border:1px solid var(--border)}
-.setup-logo{width:56px;height:56px;background:var(--navy);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 16px}
-.setup-title{font-size:20px;font-weight:700;text-align:center;margin-bottom:6px}
-.setup-sub{font-size:13px;color:var(--text-2);text-align:center;margin-bottom:24px;line-height:1.6}
-.setup-step{display:flex;gap:10px;margin-bottom:14px;align-items:flex-start}
-.step-num{width:22px;height:22px;background:var(--navy);color:#fff;border-radius:50%;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.step-text{font-size:13px;color:var(--text-2);line-height:1.6}
+/* ログイン画面 */
+.login-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,#1a3a5c 0%,#0f2640 100%)}
+.login-card{background:#fff;border-radius:20px;padding:40px;max-width:400px;width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.login-logo{font-size:48px;margin-bottom:16px}
+.login-title{font-size:22px;font-weight:700;color:var(--navy);margin-bottom:8px}
+.login-sub{font-size:13px;color:var(--text-2);margin-bottom:32px;line-height:1.6}
+.btn-google{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;padding:13px;border:1px solid var(--border-med);border-radius:var(--radius-sm);background:#fff;font-size:14px;font-weight:600;cursor:pointer;transition:all .15s;font-family:var(--font);color:var(--text)}
+.btn-google:hover{background:var(--bg);border-color:var(--navy)}
+.google-icon{width:20px;height:20px}
+/* 承認待ち */
+.pending-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;background:var(--bg);padding:20px}
+.pending-card{background:#fff;border-radius:16px;padding:32px;max-width:400px;width:100%;text-align:center;box-shadow:var(--shadow)}
+/* ユーザー管理 */
+.user-table{width:100%;border-collapse:collapse;font-size:13px}
+.user-table th{text-align:left;padding:8px 10px;font-size:11px;font-weight:700;color:var(--text-3);border-bottom:1px solid var(--border);background:#fafbfc}
+.user-table td{padding:10px;border-bottom:1px solid var(--border);vertical-align:middle}
+.role-select{border:1px solid var(--border-med);border-radius:6px;padding:4px 8px;font-size:12px;font-family:var(--font);background:#fff}
+/* ローディング */
 .loading-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;gap:16px;color:var(--text-2)}
-.loading-screen .big-spinner{width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--navy);border-radius:50%;animation:spin .8s linear infinite}
+.big-spinner{width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--navy);border-radius:50%;animation:spin .8s linear infinite}
 .empty-state{text-align:center;padding:48px 20px;color:var(--text-2)}
 .empty-state .es-icon{font-size:52px;margin-bottom:14px;opacity:.4}
 .sync-indicator{font-size:11px;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:5px}
 .sync-dot{width:6px;height:6px;border-radius:50%;background:#4caf50}
 .sync-dot.syncing{background:#ff9800;animation:pulse 1s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+/* CSV */
+.csv-preview{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px;font-size:11px;max-height:200px;overflow-y:auto}
 </style>
 </head>
 <body>
 
-<!-- ローディング画面 -->
 <div id="loading-screen" class="loading-screen">
   <div class="big-spinner"></div>
-  <div>接続中...</div>
+  <div>読み込み中...</div>
 </div>
 
-<!-- 初回セットアップ画面 -->
-<div id="setup-screen" class="setup-screen" style="display:none">
-  <div class="setup-card">
-    <div class="setup-logo">🏗️</div>
-    <h1 class="setup-title">現場請求管理 — 初回設定</h1>
-    <p class="setup-sub">Supabase接続情報とAnthropicのAPIキーを設定してください。<br>設定はこのブラウザに保存されます。</p>
-    <div class="setup-step"><div class="step-num">1</div><div class="step-text">Supabase Project URL<br><small>例: https://xxxx.supabase.co</small></div></div>
-    <div class="field" style="margin-bottom:14px"><input id="sb-url" placeholder="https://xxxx.supabase.co" type="url"></div>
-    <div class="setup-step"><div class="step-num">2</div><div class="step-text">Supabase anon key<br><small>Project Settings → API → anon public</small></div></div>
-    <div class="field" style="margin-bottom:14px"><input id="sb-key" placeholder="eyJ..." type="password"></div>
-    <div class="setup-step"><div class="step-num">3</div><div class="step-text">Anthropic APIキー（PDF自動解析用）<br><small>console.anthropic.com で取得</small></div></div>
-    <div class="field" style="margin-bottom:20px"><input id="anthropic-key" placeholder="sk-ant-..." type="password"></div>
-    <button class="btn btn-navy" style="width:100%;justify-content:center" onclick="saveSetup()">設定を保存して開始</button>
-    <p style="font-size:11px;color:var(--text-3);text-align:center;margin-top:12px">設定情報はこのブラウザのlocalStorageにのみ保存されます</p>
+<div id="login-screen" class="login-screen" style="display:none">
+  <div class="login-card">
+    <div class="login-logo">🏗️</div>
+    <h1 class="login-title">現場請求管理</h1>
+    <p class="login-sub">スナダ建設株式会社<br>社内向け請求管理システム</p>
+    <button class="btn-google" onclick="loginWithGoogle()">
+      <svg class="google-icon" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      Googleアカウントでログイン
+    </button>
   </div>
 </div>
 
-<!-- メインアプリ -->
+<div id="pending-screen" class="pending-screen" style="display:none">
+  <div class="pending-card">
+    <div style="font-size:48px;margin-bottom:16px">⏳</div>
+    <h2 style="font-size:18px;font-weight:700;margin-bottom:8px">承認待ち</h2>
+    <p style="font-size:13px;color:var(--text-2);line-height:1.6;margin-bottom:20px">システム管理者があなたのアカウントに権限を付与するまでお待ちください。</p>
+    <p id="pending-email" style="font-size:12px;color:var(--text-3);margin-bottom:20px"></p>
+    <button class="btn btn-ghost btn-sm" onclick="logout()">ログアウト</button>
+  </div>
+</div>
+
 <div id="main-app" class="app" style="display:none">
   <div class="topbar">
     <div class="topbar-left">
@@ -183,250 +208,197 @@ tbody tr:hover{background:#fafbfc}
         <div class="app-sub" id="site-count-label">読み込み中...</div>
       </div>
     </div>
-    <div style="display:flex;align-items:center;gap:8px">
+    <div style="display:flex;align-items:center;gap:10px">
       <div class="sync-indicator"><div class="sync-dot" id="sync-dot"></div><span id="sync-label">同期済</span></div>
-      <button class="btn btn-ghost btn-sm" onclick="openSettings()">⚙️ 設定</button>
-      <button class="btn btn-navy btn-sm" onclick="openAddModal()">＋ 現場を追加</button>
+      <div class="user-info">
+        <span id="user-name-label"></span>
+        <span class="role-badge" id="role-badge-label"></span>
+      </div>
+      <div id="topbar-btns" style="display:flex;gap:6px"></div>
     </div>
   </div>
   <div class="main" id="main-content-area"></div>
 </div>
 
-<!-- モーダル -->
 <div class="overlay" id="modal-overlay" style="display:none" onclick="handleOverlayClick(event)">
-  <div class="modal" id="modal-box">
-    <div class="modal-head">
-      <div class="modal-title" id="modal-title">モーダル</div>
-      <button class="modal-close" onclick="closeModal()">✕</button>
-    </div>
-    <div class="modal-body" id="modal-body"></div>
-    <div class="modal-foot" id="modal-foot"></div>
-  </div>
+  <div class="modal"><div class="modal-head"><div class="modal-title" id="modal-title"></div><button class="modal-close" onclick="closeModal()">✕</button></div><div class="modal-body" id="modal-body"></div><div class="modal-foot" id="modal-foot"></div></div>
 </div>
 
 <script>
-// ─── 設定 ───
-const CFG_KEY = 'kenba_config_v1';
-let cfg = {};
+// ─── CONFIG ───
+const SB_URL = 'https://mvzjypvvzwoxdntjxlxt.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im12emp5cHZ2endveGRudGp4bHh0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIyMzM1ODIsImV4cCI6MjA5NzgwOTU4Mn0.OAo802jvm1kpqvJS32O1hKRefazNRA8sLcvDx9RY4qA';
+const ANTHROPIC_KEY_STORAGE = 'kenba_anthropic_key';
 
-function loadCfg(){
-  try{ cfg=JSON.parse(localStorage.getItem(CFG_KEY)||'{}'); }catch(e){ cfg={}; }
-  // デフォルト値（未設定の場合のみ適用）
-  if(!cfg.sbUrl) cfg.sbUrl = 'https://mvzjypvvzwoxdntjxlxt.supabase.co';
-  if(!cfg.sbKey) cfg.sbKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im12emp5cHZ2endveGRudGp4bHh0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIyMzM1ODIsImV4cCI6MjA5NzgwOTU4Mn0.OAo802jvm1kpqvJS32O1hKRefazNRA8sLcvDx9RY4qA';
-}
-function saveCfg(){ localStorage.setItem(CFG_KEY, JSON.stringify(cfg)); }
-
-function saveSetup(){
-  const url = document.getElementById('sb-url').value.trim();
-  const key = document.getElementById('sb-key').value.trim();
-  const akey = document.getElementById('anthropic-key').value.trim();
-  if(!url||!key){ alert('SupabaseのURLとキーを入力してください'); return; }
-  cfg = { sbUrl:url, sbKey:key, anthropicKey:akey };
-  saveCfg();
-  location.reload();
-}
-
-// ─── Supabase ───
-let sb = null;
-
-function initSupabase(){
-  if(!cfg.sbUrl||!cfg.sbKey) return false;
-  sb = supabase.createClient(cfg.sbUrl, cfg.sbKey);
-  return true;
-}
+const sb = supabase.createClient(SB_URL, SB_KEY);
+const TODAY = new Date(); TODAY.setHours(0,0,0,0);
 
 // ─── STATE ───
-const TODAY = new Date(); TODAY.setHours(0,0,0,0);
+let currentUser = null;
+let currentProfile = null;
 let sites = [];
 let openSiteId = null;
 let currentTab = 'active';
 
+// ─── ROLE HELPERS ───
+const ROLES = {
+  sales:    { label:'営業',         canCreateSite:true,  canDeleteSite:false, canDeleteBilling:false, canIssue:true,  canPaid:false, canUndo:true },
+  finance:  { label:'財務管理室',   canCreateSite:false, canDeleteSite:false, canDeleteBilling:false, canIssue:false, canPaid:true,  canUndo:true },
+  admin:    { label:'システム管理者',canCreateSite:true,  canDeleteSite:true,  canDeleteBilling:true,  canIssue:true,  canPaid:true,  canUndo:true },
+  pending:  { label:'承認待ち',     canCreateSite:false, canDeleteSite:false, canDeleteBilling:false, canIssue:false, canPaid:false, canUndo:false },
+};
+function can(action){ return currentProfile && ROLES[currentProfile.role]?.[action]; }
+function roleName(r){ return ROLES[r]?.label || r; }
+
 // ─── SYNC UI ───
 function setSyncing(){ document.getElementById('sync-dot').className='sync-dot syncing'; document.getElementById('sync-label').textContent='同期中...'; }
 function setSynced(){ document.getElementById('sync-dot').className='sync-dot'; document.getElementById('sync-label').textContent='同期済'; }
-function setSyncError(){ document.getElementById('sync-dot').className='sync-dot'; document.getElementById('sync-dot').style.background='#e53935'; document.getElementById('sync-label').textContent='同期エラー'; }
+function setSyncError(){ document.getElementById('sync-dot').style.background='#e53935'; document.getElementById('sync-label').textContent='同期エラー'; }
 
-// ─── DB LOAD ───
+// ─── AUTH ───
+async function loginWithGoogle(){
+  await sb.auth.signInWithOAuth({
+    provider:'google',
+    options:{ redirectTo: window.location.href }
+  });
+}
+async function logout(){
+  await sb.auth.signOut();
+  location.reload();
+}
+
+// ─── DB ───
 async function loadFromDB(){
-  const { data: sitesData, error: e1 } = await sb.from('sites').select('*');
-  if(e1) throw e1;
-  const { data: billingsData, error: e2 } = await sb.from('billings').select('*');
-  if(e2) throw e2;
-  const { data: docsData, error: e3 } = await sb.from('docs').select('*');
-  if(e3) throw e3;
-
-  sites = sitesData.map(s=>({
-    id: s.id,
-    siteNo: s.site_no||'',
-    client: s.client||'',
-    name: s.name||'',
-    address: s.address||'',
-    structure: s.structure||'',
-    start: s.start_date||'',
-    completion: s.completion_date||'',
-    handover: s.handover_date||'',
-    totalAmount: s.total_amount||0,
-    billings: billingsData.filter(b=>b.site_id===s.id).map(b=>({
-      id: b.id,
-      label: b.label||'',
-      dueDate: b.due_date||'',
-      amount: b.amount||0,
-      note: b.note||'',
-      issuedDate: b.issued_date||null,
-      paidDate: b.paid_date||null,
+  const [s1,s2,s3,s4] = await Promise.all([
+    sb.from('sites').select('*'),
+    sb.from('billings').select('*'),
+    sb.from('docs').select('*'),
+    sb.from('additional_contracts').select('*'),
+  ]);
+  if(s1.error) throw s1.error;
+  sites = s1.data.map(s=>({
+    id:s.id, siteNo:s.site_no||'', client:s.client||'', name:s.name||'',
+    address:s.address||'', structure:s.structure||'',
+    start:s.start_date||'', completion:s.completion_date||'',
+    handover:s.handover_date||'', totalAmount:s.total_amount||0,
+    baseAmount:s.base_amount||s.total_amount||0,
+    billings:(s2.data||[]).filter(b=>b.site_id===s.id).map(b=>({
+      id:b.id,label:b.label||'',dueDate:b.due_date||'',amount:b.amount||0,
+      note:b.note||'',issuedDate:b.issued_date||null,paidDate:b.paid_date||null,
+      isAdditional:b.is_additional||false,contractId:b.contract_id||null
     })),
-    docs: docsData.filter(d=>d.site_id===s.id).map(d=>({
-      id: d.id,
-      type: d.type||'change',
-      name: d.name||'',
-      date: d.date||'',
-      notes: d.notes||'',
+    docs:(s3.data||[]).filter(d=>d.site_id===s.id).map(d=>({
+      id:d.id,type:d.type||'change',name:d.name||'',date:d.date||'',notes:d.notes||''
+    })),
+    additionalContracts:(s4.data||[]).filter(a=>a.site_id===s.id).map(a=>({
+      id:a.id,title:a.title||'',amount:a.amount||0,date:a.date||'',notes:a.notes||''
     }))
   }));
 }
 
-// ─── DB SAVE (upsert) ───
-async function saveSite(s){
+async function saveSiteDB(s){
   setSyncing();
-  try{
-    const { error: e1 } = await sb.from('sites').upsert({
-      id:s.id, site_no:s.siteNo, client:s.client, name:s.name,
-      address:s.address, structure:s.structure, start_date:s.start,
-      completion_date:s.completion, handover_date:s.handover, total_amount:s.totalAmount
-    });
-    if(e1) throw e1;
-    setSynced();
-  } catch(e){ setSyncError(); throw e; }
+  const {error}=await sb.from('sites').upsert({
+    id:s.id,site_no:s.siteNo,client:s.client,name:s.name,
+    address:s.address,structure:s.structure,start_date:s.start,
+    completion_date:s.completion,handover_date:s.handover,
+    total_amount:s.totalAmount,base_amount:s.baseAmount||s.totalAmount
+  });
+  if(error){setSyncError();throw error;} setSynced();
 }
+async function saveBillingDB(siteId,b){
+  setSyncing();
+  const {error}=await sb.from('billings').upsert({
+    id:b.id,site_id:siteId,label:b.label,due_date:b.dueDate,
+    amount:b.amount,note:b.note,issued_date:b.issuedDate||null,
+    paid_date:b.paidDate||null,is_additional:b.isAdditional||false,
+    contract_id:b.contractId||null
+  });
+  if(error){setSyncError();throw error;} setSynced();
+}
+async function saveDocDB(siteId,d){
+  setSyncing();
+  const {error}=await sb.from('docs').upsert({id:d.id,site_id:siteId,type:d.type,name:d.name,date:d.date,notes:d.notes});
+  if(error){setSyncError();throw error;} setSynced();
+}
+async function saveAdditionalContractDB(siteId,a){
+  setSyncing();
+  const {error}=await sb.from('additional_contracts').upsert({id:a.id,site_id:siteId,title:a.title,amount:a.amount,date:a.date,notes:a.notes});
+  if(error){setSyncError();throw error;} setSynced();
+}
+async function deleteDB(table,id){ setSyncing(); const {error}=await sb.from(table).delete().eq('id',id); if(error){setSyncError();throw error;} setSynced(); }
 
-async function saveBilling(siteId, b){
-  setSyncing();
-  try{
-    const { error } = await sb.from('billings').upsert({
-      id:b.id, site_id:siteId, label:b.label, due_date:b.dueDate,
-      amount:b.amount, note:b.note, issued_date:b.issuedDate||null, paid_date:b.paidDate||null
-    });
-    if(error) throw error;
-    setSynced();
-  } catch(e){ setSyncError(); throw e; }
-}
-
-async function saveDoc(siteId, d){
-  setSyncing();
-  try{
-    const { error } = await sb.from('docs').upsert({
-      id:d.id, site_id:siteId, type:d.type, name:d.name, date:d.date, notes:d.notes
-    });
-    if(error) throw error;
-    setSynced();
-  } catch(e){ setSyncError(); throw e; }
-}
-
-async function deleteSiteDB(id){
-  setSyncing();
-  const { error } = await sb.from('sites').delete().eq('id',id);
-  if(error){ setSyncError(); throw error; }
-  setSynced();
-}
-async function deleteBillingDB(id){
-  setSyncing();
-  const { error } = await sb.from('billings').delete().eq('id',id);
-  if(error){ setSyncError(); throw error; }
-  setSynced();
-}
-async function deleteDocDB(id){
-  setSyncing();
-  const { error } = await sb.from('docs').delete().eq('id',id);
-  if(error){ setSyncError(); throw error; }
-  setSynced();
-}
-
-// ─── REALTIME ───
 function subscribeRealtime(){
-  sb.channel('db-changes')
-    .on('postgres_changes',{event:'*',schema:'public'},(payload)=>{
-      loadFromDB().then(()=>render()).catch(console.error);
-    })
-    .subscribe();
+  sb.channel('db').on('postgres_changes',{event:'*',schema:'public'},()=>{
+    loadFromDB().then(()=>render()).catch(console.error);
+  }).subscribe();
 }
 
 // ─── HELPERS ───
-function daysBetween(a,b){
-  const da=new Date(a);da.setHours(0,0,0,0);
-  const db=new Date(b);db.setHours(0,0,0,0);
-  return Math.round((db-da)/(1000*60*60*24));
-}
-function fmtDate(d){
-  if(!d) return '—';
-  const dt=typeof d==='string'?new Date(d):d;
-  return dt.getFullYear()+'年'+(dt.getMonth()+1)+'月'+dt.getDate()+'日';
-}
-function fmtMoney(n){ if(!n) return '—'; return '¥'+n.toLocaleString('ja-JP'); }
-function uid(){ return crypto.randomUUID ? crypto.randomUUID() : '_'+Math.random().toString(36).substr(2,12); }
-function calcProgress(s){
-  const start=new Date(s.start),end=new Date(s.completion);
-  return Math.min(100,Math.max(0,Math.round((TODAY-start)/(end-start)*100)));
-}
-function isCompleted(s){ return s.billings.length>0 && s.billings.every(b=>b.paidDate); }
-function sortedSites(list){
-  return [...list].sort((a,b)=>{
-    const na=a.siteNo?a.siteNo.replace(/[^0-9]/g,''):'';
-    const nb=b.siteNo?b.siteNo.replace(/[^0-9]/g,''):'';
-    if(na&&nb) return parseInt(na)-parseInt(nb);
-    if(na) return -1; if(nb) return 1;
-    return a.name.localeCompare(b.name,'ja');
-  });
-}
+function daysBetween(a,b){const da=new Date(a);da.setHours(0,0,0,0);const db=new Date(b);db.setHours(0,0,0,0);return Math.round((db-da)/(1000*60*60*24));}
+function fmtDate(d){if(!d)return '—';const dt=typeof d==='string'?new Date(d):d;return dt.getFullYear()+'年'+(dt.getMonth()+1)+'月'+dt.getDate()+'日';}
+function fmtMoney(n){if(!n&&n!==0)return '—';return '¥'+Number(n).toLocaleString('ja-JP');}
+function uid(){return crypto.randomUUID?crypto.randomUUID():'_'+Math.random().toString(36).substr(2,12);}
+function calcProgress(s){const start=new Date(s.start),end=new Date(s.completion);return Math.min(100,Math.max(0,Math.round((TODAY-start)/(end-start)*100)));}
+function isCompleted(s){return s.billings.length>0&&s.billings.every(b=>b.paidDate);}
+function calcTotalAmount(s){return (s.baseAmount||0)+(s.additionalContracts||[]).reduce((a,c)=>a+c.amount,0);}
+function sortedSites(list){return [...list].sort((a,b)=>{const na=a.siteNo?a.siteNo.replace(/[^0-9]/g,''):'';const nb=b.siteNo?b.siteNo.replace(/[^0-9]/g,''):'';if(na&&nb)return parseInt(na)-parseInt(nb);if(na)return -1;if(nb)return 1;return a.name.localeCompare(b.name,'ja');});}
+function getAnthropicKey(){return localStorage.getItem(ANTHROPIC_KEY_STORAGE)||'';}
 
 // ─── ALERTS ───
 function getAlerts(){
   const out=[];
   sites.forEach(s=>{
     const handover=new Date(s.handover||s.completion);
-    const warnAt=new Date(handover); warnAt.setDate(warnAt.getDate()-14);
+    const warnAt=new Date(handover);warnAt.setDate(warnAt.getDate()-14);
     if(TODAY>=warnAt&&TODAY<=handover)
       out.push({siteId:s.id,type:'handover',msg:`「${s.name}」引渡まであと${daysBetween(TODAY,handover)}日 — 最終請求書を確認してください`});
     s.billings.forEach(b=>{
       if(b.issuedDate&&!b.paidDate){
-        const issued=new Date(b.issuedDate);
-        const warnAt2=new Date(issued); warnAt2.setDate(warnAt2.getDate()+30);
-        if(TODAY>=warnAt2)
-          out.push({siteId:s.id,type:'unpaid',msg:`「${s.name}」${b.label} — 請求書発行から${daysBetween(issued,TODAY)}日経過しても入金がありません`});
+        const issued=new Date(b.issuedDate);const warnAt2=new Date(issued);warnAt2.setDate(warnAt2.getDate()+30);
+        if(TODAY>=warnAt2) out.push({siteId:s.id,type:'unpaid',msg:`「${s.name}」${b.label} — 請求書発行から${daysBetween(issued,TODAY)}日経過しても入金がありません`});
       }
-      if(b.issuedDate) return;
+      if(b.issuedDate)return;
       const due=new Date(b.dueDate);
-      if(TODAY>due){
-        out.push({siteId:s.id,type:'overdue',msg:`「${s.name}」${b.label} の請求期限が超過しています（${fmtDate(b.dueDate)}）`});
-      } else {
-        const warn=new Date(due); warn.setDate(warn.getDate()-14);
-        if(TODAY>=warn)
-          out.push({siteId:s.id,type:'warn',msg:`「${s.name}」${b.label} の請求期限まであと${daysBetween(TODAY,due)}日`});
-      }
+      if(TODAY>due) out.push({siteId:s.id,type:'overdue',msg:`「${s.name}」${b.label} の請求期限が超過しています`});
+      else{const warn=new Date(due);warn.setDate(warn.getDate()-14);if(TODAY>=warn) out.push({siteId:s.id,type:'warn',msg:`「${s.name}」${b.label} の請求期限まであと${daysBetween(TODAY,due)}日`});}
     });
   });
   return out;
 }
 
 // ─── RENDER ───
-function switchTab(t){ currentTab=t; openSiteId=null; render(); }
+function switchTab(t){currentTab=t;openSiteId=null;render();}
+function toggleSite(id){openSiteId=openSiteId===id?null:id;render();}
 
 function render(){
   const area=document.getElementById('main-content-area');
   const alerts=getAlerts();
   const activeSites=sites.filter(s=>!isCompleted(s));
   const doneSites=sites.filter(s=>isCompleted(s));
-  const displaySites=currentTab==='active'?activeSites:doneSites;
+  const displaySites=currentTab==='active'?activeSites:currentTab==='done'?doneSites:null;
   const pending=activeSites.reduce((a,s)=>a+s.billings.filter(b=>!b.issuedDate).length,0);
   const unpaid=activeSites.reduce((a,s)=>a+s.billings.filter(b=>b.issuedDate&&!b.paidDate).length,0);
-
   document.getElementById('site-count-label').textContent=sites.length+'件の現場を管理中';
 
+  // topbar buttons
+  const btns=document.getElementById('topbar-btns');
+  let bhtml='';
+  if(can('canCreateSite')) bhtml+=`<button class="btn btn-navy btn-sm" onclick="openAddModal()">＋ 現場を追加</button>`;
+  bhtml+=`<button class="btn btn-ghost btn-sm" onclick="openCsvModal()">📂 CSV取込</button>`;
+  if(can('canDeleteSite')) bhtml+=`<button class="btn btn-ghost btn-sm" onclick="openUserMgmt()">👥 ユーザー管理</button>`;
+  bhtml+=`<button class="btn btn-ghost btn-sm" onclick="logout()">ログアウト</button>`;
+  btns.innerHTML=bhtml;
+
   let html='';
+  // タブ
   html+=`<div class="tab-bar">
     <button class="tab-btn${currentTab==='active'?' active':''}" onclick="switchTab('active')">🏗️ 施工中<span class="tab-count">${activeSites.length}</span></button>
     <button class="tab-btn tab-done${currentTab==='done'?' active':''}" onclick="switchTab('done')">✅ 完了<span class="tab-count">${doneSites.length}</span></button>
+    ${can('canDeleteSite')?`<button class="tab-btn${currentTab==='users'?' active':''}" onclick="switchTab('users')">👥 ユーザー</button>`:''}
   </div>`;
+
+  if(currentTab==='users'){ html+=renderUserTab(); area.innerHTML=html; return; }
 
   if(currentTab==='active'&&activeSites.length>0){
     html+=`<div class="summary-bar">
@@ -435,27 +407,59 @@ function render(){
       <div class="sum-card"><div class="sum-lbl">入金待ち</div><div class="sum-val" style="color:${unpaid?'var(--blue)':'var(--green)'}">${unpaid}</div><div class="sum-sub">件</div></div>
     </div>`;
   }
-
   if(currentTab==='active'&&alerts.length){
     html+='<div class="alerts-area">';
     alerts.forEach(a=>{
       const cls=(a.type==='overdue'||a.type==='unpaid')?'alert-danger':'alert-warn';
       const ico=a.type==='overdue'?'🔴':a.type==='unpaid'?'💴':'🔔';
-      html+=`<div class="alert ${cls}"><span class="alert-icon">${ico}</span><span>${a.msg}</span></div>`;
+      html+=`<div class="alert ${cls}"><span style="font-size:18px;flex-shrink:0">${ico}</span><span>${a.msg}</span></div>`;
     });
     html+='</div>';
   }
-
   if(!displaySites.length){
-    const msg=currentTab==='active'
-      ?'<p>施工中の現場はありません</p><small>「＋ 現場を追加」から登録してください</small>'
-      :'<p>完了した現場はありません</p><small>全請求が入金済になると自動的にここへ移動します</small>';
-    html+=`<div class="empty-state"><div class="es-icon">${currentTab==='active'?'🏗️':'✅'}</div>${msg}</div>`;
+    html+=`<div class="empty-state"><div class="es-icon">${currentTab==='active'?'🏗️':'✅'}</div><p>${currentTab==='active'?'施工中の現場はありません':'完了した現場はありません'}</p></div>`;
   } else {
     sortedSites(displaySites).forEach(s=>{ html+=renderSiteCard(s,alerts); });
   }
-
   area.innerHTML=html;
+}
+
+function renderUserTab(){
+  return `<div id="user-tab-content"><div style="text-align:center;padding:20px;color:var(--text-2)"><div class="spinner" style="margin:0 auto 8px"></div>ユーザー情報を読み込み中...</div></div>`;
+  // 非同期でロード
+  setTimeout(loadUserTab,100);
+}
+
+async function loadUserTab(){
+  const {data,error}=await sb.from('user_profiles').select('*').order('created_at');
+  if(error){document.getElementById('user-tab-content').innerHTML=`<div class="alert alert-danger">読み込みエラー: ${error.message}</div>`;return;}
+  let html=`<div class="card"><div class="card-body">
+    <div class="section-label">👥 ユーザー管理</div>
+    <table class="user-table">
+      <thead><tr><th>名前</th><th>メールアドレス</th><th>現在のロール</th><th>変更</th></tr></thead>
+      <tbody>`;
+  data.forEach(u=>{
+    html+=`<tr>
+      <td style="font-weight:500">${u.name||'—'}</td>
+      <td style="font-size:12px;color:var(--text-2)">${u.email||'—'}</td>
+      <td><span class="badge ${u.role==='admin'?'badge-active':u.role==='pending'?'badge-warn':'badge-done'}">${roleName(u.role)}</span></td>
+      <td><select class="role-select" onchange="updateUserRole('${u.id}',this.value)">
+        <option value="pending" ${u.role==='pending'?'selected':''}>承認待ち</option>
+        <option value="sales" ${u.role==='sales'?'selected':''}>営業</option>
+        <option value="finance" ${u.role==='finance'?'selected':''}>財務管理室</option>
+        <option value="admin" ${u.role==='admin'?'selected':''}>システム管理者</option>
+      </select></td>
+    </tr>`;
+  });
+  html+=`</tbody></table></div></div>`;
+  const el=document.getElementById('user-tab-content');
+  if(el) el.innerHTML=html;
+}
+
+async function updateUserRole(userId,role){
+  const {error}=await sb.from('user_profiles').update({role}).eq('id',userId);
+  if(error){alert('更新失敗: '+error.message);return;}
+  alert('ロールを更新しました');
 }
 
 function renderSiteCard(s,alerts){
@@ -466,17 +470,24 @@ function renderSiteCard(s,alerts){
   const pct=calcProgress(s);
   const unpaid=s.billings.filter(b=>!b.issuedDate).length;
   const total=s.billings.length;
-  let statusBadge='';
-  if(daysLeft<0) statusBadge='<span class="badge badge-done">✓ 完了</span>';
-  else if(daysLeft<=14) statusBadge='<span class="badge badge-warn">⚠ 引渡間近</span>';
-  else statusBadge='<span class="badge badge-active">● 施工中</span>';
+  const totalAmt=calcTotalAmount(s);
+  let statusBadge=daysLeft<0?'<span class="badge badge-done">✓ 完了</span>':daysLeft<=14?'<span class="badge badge-warn">⚠ 引渡間近</span>':'<span class="badge badge-active">● 施工中</span>';
 
   let body='';
   if(isOpen){
+    // 契約金額サマリー
+    const addContracts=s.additionalContracts||[];
+    let contractHtml=`<div class="contract-summary">
+      <div class="contract-row"><span class="contract-label">当初契約金額</span><span class="contract-amount">${fmtMoney(s.baseAmount||s.totalAmount)}</span></div>`;
+    addContracts.forEach((a,i)=>{
+      contractHtml+=`<div class="contract-row"><span class="contract-label">追加契約${i+1}: ${a.title}<span class="add-contract-tag">追加</span></span><span class="contract-amount" style="color:var(--amber)">+${fmtMoney(a.amount)}</span></div>`;
+    });
+    contractHtml+=`<div class="contract-row total"><span>請負代金合計（税込）</span><span>${fmtMoney(totalAmt)}</span></div></div>`;
+
     body=`<div class="card-body">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
         <div class="section-label" style="margin-bottom:0">📋 基本情報</div>
-        <button class="btn btn-ghost btn-sm" onclick="openEditSite('${s.id}')">✏️ 編集</button>
+        ${can('canCreateSite')?`<button class="btn btn-ghost btn-sm" onclick="openEditSite('${s.id}')">✏️ 編集</button>`:''}
       </div>
       <div class="info-grid">
         <div class="info-item"><div class="lbl">現場番号</div><div class="val">${s.siteNo||'—'}</div></div>
@@ -486,40 +497,42 @@ function renderSiteCard(s,alerts){
         <div class="info-item"><div class="lbl">着工</div><div class="val">${fmtDate(s.start)}</div></div>
         <div class="info-item"><div class="lbl">竣工予定</div><div class="val">${fmtDate(s.completion)}</div></div>
         <div class="info-item"><div class="lbl">引渡予定</div><div class="val" style="color:var(--navy);font-weight:700">${fmtDate(s.handover)}</div></div>
-        <div class="info-item"><div class="lbl">請負代金合計（税込）</div><div class="val" style="color:var(--navy)">${fmtMoney(s.totalAmount)}</div></div>
+      </div>
+      ${contractHtml}
+      <div style="display:flex;gap:8px;margin-bottom:14px">
+        ${can('canCreateSite')?`<button class="btn btn-ghost btn-sm" onclick="openAddAdditionalContract('${s.id}')">＋ 追加契約を追加</button>`:''}
       </div>
       <div class="progress-wrap">
         <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
-        <div class="progress-meta"><span>着工 ${fmtDate(s.start)}</span><span>工期進捗 ${pct}%</span><span>竣工 ${fmtDate(s.completion)}</span></div>
+        <div class="progress-meta"><span>${fmtDate(s.start)}</span><span>${pct}%</span><span>${fmtDate(s.completion)}</span></div>
       </div>
       <div class="divider"></div>
       <div class="section-label">📄 請求スケジュール</div>
       <div class="billing-wrap">
         <table>
-          <thead><tr><th>請求項目</th><th>期限日</th><th>金額</th><th>ステータス</th><th></th></tr></thead>
+          <thead><tr><th>請求項目</th><th>種別</th><th>期限日</th><th>金額</th><th>ステータス</th><th></th></tr></thead>
           <tbody>${s.billings.map(b=>renderBillingRow(s.id,b)).join('')}</tbody>
         </table>
       </div>
-      <button class="btn btn-ghost btn-sm" onclick="openAddBilling('${s.id}')">＋ 請求項目を追加</button>
+      ${can('canCreateSite')?`<button class="btn btn-ghost btn-sm" onclick="openAddBilling('${s.id}')">＋ 請求項目を追加</button>`:''}
       <div class="divider"></div>
       <div class="section-label">📁 関連書類</div>
       <div class="doc-list">
-        ${s.docs.map(d=>`<div class="doc-row"><span style="font-size:16px">📄</span><span class="doc-type-pill ${d.type==='original'?'pill-original':'pill-change'}">${d.type==='original'?'原契約':'覚書'}</span><span class="doc-name">${d.name}</span><span class="doc-date">${fmtDate(d.date)}</span><button class="btn btn-ghost btn-xs" onclick="rmDoc('${s.id}','${d.id}')">✕</button></div>`).join('')}
+        ${s.docs.map(d=>`<div class="doc-row"><span>📄</span><span class="doc-type-pill ${d.type==='original'?'pill-original':'pill-change'}">${d.type==='original'?'原契約':'覚書'}</span><span style="flex:1;font-size:12px;font-weight:500">${d.name}</span><span style="font-size:11px;color:var(--text-3)">${fmtDate(d.date)}</span>${can('canDeleteSite')?`<button class="btn btn-ghost btn-xs" onclick="rmDoc('${s.id}','${d.id}')">✕</button>`:''}</div>`).join('')}
       </div>
-      <button class="btn btn-ghost btn-sm" onclick="openAddDoc('${s.id}')">＋ 覚書・書類を追加</button>
+      ${can('canCreateSite')?`<button class="btn btn-ghost btn-sm" onclick="openAddDoc('${s.id}')">＋ 覚書・書類を追加</button>`:''}
       <div class="divider"></div>
       <div style="display:flex;justify-content:flex-end">
-        <button class="btn btn-danger btn-sm" onclick="rmSite('${s.id}')">🗑 現場を削除</button>
+        ${can('canDeleteSite')?`<button class="btn btn-danger btn-sm" onclick="rmSite('${s.id}')">🗑 現場を削除</button>`:''}
       </div>
     </div>`;
   }
-
   return `<div class="card${siteAlerts.length?' card-alert':''}">
     <div class="card-header" onclick="toggleSite('${s.id}')">
       <div class="card-icon${siteAlerts.length?' card-icon-warn':''}">🏗️</div>
       <div class="card-info">
         <div class="card-name">${s.siteNo?`<span style="display:inline-block;background:var(--navy);color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:4px;margin-right:6px;vertical-align:middle">No.${s.siteNo}</span>`:''}${s.name}</div>
-        <div class="card-meta">引渡: ${fmtDate(s.handover||s.completion)} ／ 未請求: ${unpaid}/${total}件</div>
+        <div class="card-meta">${s.client||''} ／ 引渡: ${fmtDate(s.handover||s.completion)} ／ 未請求: ${unpaid}/${total}件 ／ 合計: ${fmtMoney(totalAmt)}</div>
       </div>
       <div class="card-right">${statusBadge}<span class="chevron${isOpen?' open':''}">⌄</span></div>
     </div>
@@ -531,341 +544,311 @@ function renderBillingRow(siteId,b){
   const due=new Date(b.dueDate);
   const isOverdue=!b.issuedDate&&TODAY>due;
   const isUpcoming=!b.issuedDate&&!isOverdue&&daysBetween(TODAY,due)<=14;
-  const rowCls=isOverdue?'row-overdue':isUpcoming?'row-upcoming':'';
+  const rowCls=isOverdue?'row-overdue':isUpcoming?'row-upcoming':b.isAdditional?'row-additional':'';
+  const kindTag=b.isAdditional?'<span class="add-contract-tag">追加</span>':'<span style="font-size:10px;color:var(--text-3)">当初</span>';
   let statusHtml='';
   if(b.paidDate){
-    statusHtml=`<div class="status-actions"><span class="chip chip-paid">✓ 入金済</span><div class="date-log">${fmtDate(b.paidDate)}</div><button class="btn btn-ghost btn-xs" style="color:var(--text-3)" onclick="unmarkPaid('${siteId}','${b.id}')">↩ 取消</button></div>`;
+    statusHtml=`<div class="status-actions"><span class="chip chip-paid">✓ 入金済</span><div class="date-log">${fmtDate(b.paidDate)}</div>${can('canUndo')?`<button class="btn btn-ghost btn-xs" onclick="unmarkPaid('${siteId}','${b.id}')">↩ 取消</button>`:''}</div>`;
   } else if(b.issuedDate){
-    statusHtml=`<div class="status-actions"><span class="chip chip-issued">📤 発行済</span><div class="date-log">${fmtDate(b.issuedDate)}</div><button class="btn btn-success btn-xs" onclick="markPaid('${siteId}','${b.id}')">入金確認</button><button class="btn btn-ghost btn-xs" style="color:var(--text-3)" onclick="unmarkIssued('${siteId}','${b.id}')">↩ 取消</button></div>`;
+    statusHtml=`<div class="status-actions"><span class="chip chip-issued">📤 発行済</span><div class="date-log">${fmtDate(b.issuedDate)}</div>${can('canPaid')?`<button class="btn btn-success btn-xs" onclick="markPaid('${siteId}','${b.id}')">入金確認</button>`:''} ${can('canUndo')?`<button class="btn btn-ghost btn-xs" onclick="unmarkIssued('${siteId}','${b.id}')">↩ 取消</button>`:''}</div>`;
   } else {
     const chip=isOverdue?`<span class="chip chip-overdue">⚠ 期限超過</span>`:`<span class="chip chip-pending">未発行</span>`;
-    statusHtml=`<div class="status-actions">${chip}<button class="btn btn-navy btn-xs" onclick="markIssued('${siteId}','${b.id}')">発行済にする</button></div>`;
+    statusHtml=`<div class="status-actions">${chip}${can('canIssue')?`<button class="btn btn-navy btn-xs" onclick="markIssued('${siteId}','${b.id}')">発行済にする</button>`:''}</div>`;
   }
-  return `<tr class="${rowCls}"><td><div class="billing-label">${b.label}</div><div class="billing-note">${b.note||''}</div></td><td style="white-space:nowrap;font-size:13px">${fmtDate(b.dueDate)}</td><td class="amount-cell">${fmtMoney(b.amount)}</td><td>${statusHtml}</td><td><button class="btn btn-ghost btn-xs" onclick="rmBilling('${siteId}','${b.id}')">✕</button></td></tr>`;
+  return `<tr class="${rowCls}"><td><div class="billing-label">${b.label}</div><div class="billing-note">${b.note||''}</div></td><td>${kindTag}</td><td style="white-space:nowrap;font-size:13px">${fmtDate(b.dueDate)}</td><td class="amount-cell">${fmtMoney(b.amount)}</td><td>${statusHtml}</td><td>${can('canDeleteBilling')?`<button class="btn btn-ghost btn-xs" onclick="rmBilling('${siteId}','${b.id}')">✕</button>`:''}</td></tr>`;
 }
-
-function toggleSite(id){ openSiteId=openSiteId===id?null:id; render(); }
 
 // ─── ACTIONS ───
 async function markIssued(siteId,bId){
   const s=sites.find(x=>x.id===siteId),b=s.billings.find(x=>x.id===bId);
-  b.issuedDate=new Date().toISOString().split('T')[0];
-  render(); await saveBilling(siteId,b);
+  b.issuedDate=new Date().toISOString().split('T')[0]; render(); await saveBillingDB(siteId,b);
 }
 async function markPaid(siteId,bId){
   const s=sites.find(x=>x.id===siteId),b=s.billings.find(x=>x.id===bId);
-  b.paidDate=new Date().toISOString().split('T')[0];
-  render(); await saveBilling(siteId,b);
+  b.paidDate=new Date().toISOString().split('T')[0]; render(); await saveBillingDB(siteId,b);
 }
 async function unmarkIssued(siteId,bId){
-  if(!confirm('発行済を取り消しますか？')) return;
+  if(!confirm('発行済を取り消しますか？'))return;
   const s=sites.find(x=>x.id===siteId),b=s.billings.find(x=>x.id===bId);
-  b.issuedDate=null; render(); await saveBilling(siteId,b);
+  b.issuedDate=null; render(); await saveBillingDB(siteId,b);
 }
 async function unmarkPaid(siteId,bId){
-  if(!confirm('入金済を取り消しますか？')) return;
+  if(!confirm('入金済を取り消しますか？'))return;
   const s=sites.find(x=>x.id===siteId),b=s.billings.find(x=>x.id===bId);
-  b.paidDate=null; render(); await saveBilling(siteId,b);
+  b.paidDate=null; render(); await saveBillingDB(siteId,b);
 }
 async function rmBilling(siteId,bId){
-  if(!confirm('この請求項目を削除しますか？')) return;
-  const s=sites.find(x=>x.id===siteId);
-  s.billings=s.billings.filter(b=>b.id!==bId);
-  render(); await deleteBillingDB(bId);
+  if(!confirm('この請求項目を削除しますか？'))return;
+  const s=sites.find(x=>x.id===siteId); s.billings=s.billings.filter(b=>b.id!==bId);
+  render(); await deleteDB('billings',bId);
 }
 async function rmDoc(siteId,dId){
-  if(!confirm('この書類を削除しますか？')) return;
-  const s=sites.find(x=>x.id===siteId);
-  s.docs=s.docs.filter(d=>d.id!==dId);
-  render(); await deleteDocDB(dId);
+  if(!confirm('この書類を削除しますか？'))return;
+  const s=sites.find(x=>x.id===siteId); s.docs=s.docs.filter(d=>d.id!==dId);
+  render(); await deleteDB('docs',dId);
 }
 async function rmSite(id){
-  if(!confirm('この現場を削除しますか？（関連する請求・書類もすべて削除されます）')) return;
-  sites=sites.filter(s=>s.id!==id);
-  if(openSiteId===id) openSiteId=null;
-  render(); await deleteSiteDB(id);
+  if(!confirm('この現場を削除しますか？'))return;
+  sites=sites.filter(s=>s.id!==id); if(openSiteId===id)openSiteId=null;
+  render(); await deleteDB('sites',id);
 }
 
 // ─── MODALS ───
-function openModal(){ document.getElementById('modal-overlay').style.display='flex'; }
-function closeModal(){ document.getElementById('modal-overlay').style.display='none'; }
-function handleOverlayClick(e){ if(e.target===document.getElementById('modal-overlay')) closeModal(); }
-
-// 設定
-function openSettings(){
-  document.getElementById('modal-title').textContent='設定';
-  document.getElementById('modal-body').innerHTML=`
-    <div class="field"><label>Supabase URL</label><input id="cfg-url" value="${cfg.sbUrl||''}" type="url"></div>
-    <div class="field"><label>Supabase anon key</label><input id="cfg-key" value="${cfg.sbKey||''}" type="password"></div>
-    <div class="field"><label>Anthropic APIキー</label><input id="cfg-akey" value="${cfg.anthropicKey||''}" type="password"></div>`;
-  document.getElementById('modal-foot').innerHTML=`<button class="btn btn-ghost" onclick="closeModal()">キャンセル</button><button class="btn btn-navy" onclick="applySettings()">保存して再読込</button>`;
-  openModal();
-}
-function applySettings(){
-  cfg.sbUrl=document.getElementById('cfg-url').value.trim();
-  cfg.sbKey=document.getElementById('cfg-key').value.trim();
-  cfg.anthropicKey=document.getElementById('cfg-akey').value.trim();
-  saveCfg(); location.reload();
-}
+function openModal(){document.getElementById('modal-overlay').style.display='flex';}
+function closeModal(){document.getElementById('modal-overlay').style.display='none';}
+function handleOverlayClick(e){if(e.target===document.getElementById('modal-overlay'))closeModal();}
+function setModal(title,body,foot){document.getElementById('modal-title').textContent=title;document.getElementById('modal-body').innerHTML=body;document.getElementById('modal-foot').innerHTML=foot;}
 
 // 現場追加
 function openAddModal(){
-  document.getElementById('modal-title').textContent='新規現場を追加';
-  document.getElementById('modal-body').innerHTML=`
-    <div class="alert alert-info"><span class="alert-icon">🤖</span><span>契約書PDFをアップロードすると、AIが情報を自動で読み取ります。</span></div>
-    <div class="upload-zone" id="uz-main" onclick="document.getElementById('pdf-main').click()"
-      ondragover="event.preventDefault();this.classList.add('dragging')"
-      ondragleave="this.classList.remove('dragging')"
-      ondrop="this.classList.remove('dragging');handleMainDrop(event)">
-      <div class="uz-icon">📤</div><p>契約書PDFをクリックまたはドラッグ</p><small>自動解析します</small>
+  setModal('新規現場を追加',`
+    <div class="alert alert-info"><span style="font-size:18px">🤖</span><span>契約書PDFをアップロードすると自動解析します。</span></div>
+    <div class="upload-zone" onclick="document.getElementById('pdf-main').click()" ondragover="event.preventDefault();this.classList.add('dragging')" ondragleave="this.classList.remove('dragging')" ondrop="this.classList.remove('dragging');handleMainDrop(event)">
+      <div class="uz-icon">📤</div><p>契約書PDFをクリックまたはドラッグ</p>
       <input type="file" id="pdf-main" accept=".pdf" style="display:none" onchange="handleMainFile(this.files[0])">
     </div>
     <div id="ai-status-main"></div>
-    <div class="field-row">
-      <div class="field"><label>現場番号</label><input id="fn-siteno" placeholder="例: 743"></div>
-      <div class="field"><label>工事名 *</label><input id="fn-name" placeholder="(仮称)○○プロジェクト新築工事"></div>
-    </div>
-    <div class="field"><label>発注者名</label><input id="fn-client" placeholder="例：株式会社〇〇"></div>
-    <div class="field"><label>工事場所</label><input id="fn-addr" placeholder="大阪府大阪市..."></div>
-    <div class="field"><label>構造・規模</label><input id="fn-struct" placeholder="RC造 XX戸 XX階建て"></div>
-    <div class="field-row">
-      <div class="field"><label>着工日</label><input type="date" id="fn-start"></div>
-      <div class="field"><label>竣工予定日</label><input type="date" id="fn-completion"></div>
-    </div>
-    <div class="field-row">
-      <div class="field"><label>引渡予定日</label><input type="date" id="fn-handover"></div>
-      <div class="field"><label>請負代金合計（税込）</label><input type="number" id="fn-amount" placeholder="例: 4941200000"></div>
-    </div>
-    <div><div class="section-label" style="margin-bottom:8px">📄 請求スケジュール</div><div id="billing-rows-main"></div>
-    <button class="btn btn-ghost btn-sm" onclick="addBillingRow('billing-rows-main')">＋ 請求項目を追加</button></div>`;
-  document.getElementById('modal-foot').innerHTML=`<button class="btn btn-ghost" onclick="closeModal()">キャンセル</button><button class="btn btn-navy" onclick="saveNewSite()">保存</button>`;
+    <div class="field-row"><div class="field"><label>現場番号</label><input id="fn-siteno"></div><div class="field"><label>工事名 *</label><input id="fn-name"></div></div>
+    <div class="field"><label>発注者名</label><input id="fn-client"></div>
+    <div class="field"><label>工事場所</label><input id="fn-addr"></div>
+    <div class="field"><label>構造・規模</label><input id="fn-struct"></div>
+    <div class="field-row"><div class="field"><label>着工日</label><input type="date" id="fn-start"></div><div class="field"><label>竣工予定日</label><input type="date" id="fn-completion"></div></div>
+    <div class="field-row"><div class="field"><label>引渡予定日</label><input type="date" id="fn-handover"></div><div class="field"><label>当初契約金額（税込）</label><input type="number" id="fn-amount"></div></div>
+    <div><div class="section-label" style="margin-bottom:8px">📄 請求スケジュール</div><div id="billing-rows-main"></div><button class="btn btn-ghost btn-sm" onclick="addBillingRow('billing-rows-main')">＋ 追加</button></div>`,
+    `<button class="btn btn-ghost" onclick="closeModal()">キャンセル</button><button class="btn btn-navy" onclick="saveNewSite()">保存</button>`);
   openModal();
 }
 
-function addBillingRow(cid,label='',dueDate='',amount=''){
-  const id=uid(); const row=document.createElement('div');
-  row.id=id; row.style.cssText='display:grid;grid-template-columns:1.8fr 1.1fr 1.2fr auto;gap:6px;align-items:end;margin-bottom:8px';
-  row.innerHTML=`<div class="field"><label>項目名</label><input style="font-size:13px" placeholder="例：着工時（10%）" value="${label}"></div><div class="field"><label>期限日</label><input type="date" style="font-size:13px" value="${dueDate}"></div><div class="field"><label>金額（税込）</label><input type="number" style="font-size:13px" placeholder="0" value="${amount}"></div><button onclick="document.getElementById('${id}').remove()" class="btn btn-ghost btn-sm" style="margin-bottom:1px;padding:9px 10px">✕</button>`;
+function addBillingRow(cid,label='',dueDate='',amount='',isAdditional=false){
+  const id=uid();const row=document.createElement('div');
+  row.id=id;row.style.cssText='display:grid;grid-template-columns:1.8fr 1.1fr 1.2fr auto;gap:6px;align-items:end;margin-bottom:8px';
+  row.innerHTML=`<div class="field"><label>項目名</label><input style="font-size:13px" value="${label}"></div><div class="field"><label>期限日</label><input type="date" style="font-size:13px" value="${dueDate}"></div><div class="field"><label>金額</label><input type="number" style="font-size:13px" value="${amount}"></div><button onclick="document.getElementById('${id}').remove()" class="btn btn-ghost btn-sm" style="margin-bottom:1px">✕</button>`;
   document.getElementById(cid).appendChild(row);
 }
 
-function handleMainDrop(e){ e.preventDefault(); const f=e.dataTransfer.files[0]; if(f) handleMainFile(f); }
-
+function handleMainDrop(e){e.preventDefault();const f=e.dataTransfer.files[0];if(f)handleMainFile(f);}
 async function handleMainFile(file){
-  if(!file||file.type!=='application/pdf'){ alert('PDFファイルを選択してください'); return; }
-  const st=document.getElementById('ai-status-main');
-  st.innerHTML=`<div class="ai-box ai-analyzing"><div class="spinner"></div>AIがPDFを解析中...</div>`;
+  if(!file||file.type!=='application/pdf'){alert('PDFを選択してください');return;}
+  const akey=getAnthropicKey();
+  if(!akey){
+    document.getElementById('ai-status-main').innerHTML=`<div class="ai-box ai-error">⚠ AnthropicのAPIキーが設定されていません。<button class="btn btn-ghost btn-xs" onclick="promptAnthropicKey()">設定する</button></div>`;
+    return;
+  }
+  document.getElementById('ai-status-main').innerHTML=`<div class="ai-box ai-analyzing"><div class="spinner"></div>AIがPDFを解析中...</div>`;
   try{
     const b64=await toBase64(file);
-    const res=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{'Content-Type':'application/json','x-api-key':cfg.anthropicKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-calls':'true'},
-      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1200,messages:[{role:'user',content:[
-        {type:'document',source:{type:'base64',media_type:'application/pdf',data:b64}},
-        {type:'text',text:`この工事請負契約書PDFから以下の情報をJSONのみで返してください。コードブロック・説明文不要。
-{"name":"工事名","address":"工事場所","structure":"構造規模","start":"YYYY-MM-DD","completion":"YYYY-MM-DD","handover":"YYYY-MM-DD","totalAmount":税込合計数値,"billings":[{"label":"請求名","dueDate":"YYYY-MM-DD","amount":税込金額数値,"note":"備考"}]}`}
-      ]}]})
-    });
-    if(!res.ok) throw new Error('API Error: '+res.status);
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':akey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-calls':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1200,messages:[{role:'user',content:[{type:'document',source:{type:'base64',media_type:'application/pdf',data:b64}},{type:'text',text:`この工事請負契約書PDFから以下の情報をJSONのみで返してください。コードブロック不要。{"name":"工事名","address":"工事場所","structure":"構造規模","start":"YYYY-MM-DD","completion":"YYYY-MM-DD","handover":"YYYY-MM-DD","totalAmount":税込合計数値,"billings":[{"label":"請求名","dueDate":"YYYY-MM-DD","amount":税込金額数値,"note":"備考"}]}`}]}]})});
+    if(!res.ok)throw new Error('API Error: '+res.status);
     const data=await res.json();
     const r=JSON.parse(data.content.map(c=>c.text||'').join('').replace(/```json|```/g,'').trim());
-    if(r.name) document.getElementById('fn-name').value=r.name;
-    if(r.address) document.getElementById('fn-addr').value=r.address;
-    if(r.structure) document.getElementById('fn-struct').value=r.structure;
-    if(r.start) document.getElementById('fn-start').value=r.start;
-    if(r.completion) document.getElementById('fn-completion').value=r.completion;
-    if(r.handover) document.getElementById('fn-handover').value=r.handover;
-    if(r.totalAmount) document.getElementById('fn-amount').value=r.totalAmount;
+    if(r.name)document.getElementById('fn-name').value=r.name;
+    if(r.address)document.getElementById('fn-addr').value=r.address;
+    if(r.structure)document.getElementById('fn-struct').value=r.structure;
+    if(r.start)document.getElementById('fn-start').value=r.start;
+    if(r.completion)document.getElementById('fn-completion').value=r.completion;
+    if(r.handover)document.getElementById('fn-handover').value=r.handover;
+    if(r.totalAmount)document.getElementById('fn-amount').value=r.totalAmount;
     document.getElementById('billing-rows-main').innerHTML='';
-    if(r.billings?.length) r.billings.forEach(b=>addBillingRow('billing-rows-main',b.label||'',b.dueDate||'',b.amount||''));
-    st.innerHTML=`<div class="ai-box ai-done">✅ 解析完了 — 内容を確認・修正して保存してください</div>`;
-  } catch(err){
-    st.innerHTML=`<div class="ai-box ai-error">⚠ 解析失敗。手動で入力してください。（${err.message}）</div>`;
-  }
+    if(r.billings?.length)r.billings.forEach(b=>addBillingRow('billing-rows-main',b.label||'',b.dueDate||'',b.amount||''));
+    document.getElementById('ai-status-main').innerHTML=`<div class="ai-box ai-done">✅ 解析完了 — 内容を確認して保存してください</div>`;
+  }catch(err){document.getElementById('ai-status-main').innerHTML=`<div class="ai-box ai-error">⚠ 解析失敗: ${err.message}</div>`;}
+}
+
+function promptAnthropicKey(){
+  const k=prompt('AnthropicのAPIキー（sk-ant-...）を入力してください');
+  if(k){localStorage.setItem(ANTHROPIC_KEY_STORAGE,k);alert('保存しました。再度PDFをアップロードしてください。');}
 }
 
 async function saveNewSite(){
   const name=document.getElementById('fn-name').value.trim();
-  if(!name){ alert('工事名を入力してください'); return; }
+  if(!name){alert('工事名を入力してください');return;}
   const rows=document.querySelectorAll('#billing-rows-main > div');
   const billings=[];
-  rows.forEach(row=>{
-    const ins=row.querySelectorAll('input');
-    if(ins[0]?.value) billings.push({id:uid(),label:ins[0].value,dueDate:ins[1]?.value||'',amount:parseInt(ins[2]?.value||'0'),note:'',issuedDate:null,paidDate:null});
-  });
-  const s={id:uid(),siteNo:document.getElementById('fn-siteno').value.trim(),client:document.getElementById('fn-client').value.trim(),name,address:document.getElementById('fn-addr').value,structure:document.getElementById('fn-struct').value,start:document.getElementById('fn-start').value,completion:document.getElementById('fn-completion').value,handover:document.getElementById('fn-handover').value,totalAmount:parseInt(document.getElementById('fn-amount').value||'0'),docs:[],billings};
-  sites.push(s); openSiteId=s.id;
-  closeModal(); render();
-  try{
-    await saveSite(s);
-    for(const b of billings) await saveBilling(s.id,b);
-  } catch(e){ alert('保存に失敗しました: '+e.message); }
+  rows.forEach(row=>{const ins=row.querySelectorAll('input');if(ins[0]?.value)billings.push({id:uid(),label:ins[0].value,dueDate:ins[1]?.value||'',amount:parseInt(ins[2]?.value||'0'),note:'',issuedDate:null,paidDate:null,isAdditional:false});});
+  const amt=parseInt(document.getElementById('fn-amount').value||'0');
+  const s={id:uid(),siteNo:document.getElementById('fn-siteno').value.trim(),client:document.getElementById('fn-client').value.trim(),name,address:document.getElementById('fn-addr').value,structure:document.getElementById('fn-struct').value,start:document.getElementById('fn-start').value,completion:document.getElementById('fn-completion').value,handover:document.getElementById('fn-handover').value,totalAmount:amt,baseAmount:amt,docs:[],billings,additionalContracts:[]};
+  sites.push(s);openSiteId=s.id;closeModal();render();
+  try{await saveSiteDB(s);for(const b of billings)await saveBillingDB(s.id,b);}catch(e){alert('保存失敗: '+e.message);}
 }
 
 // 基本情報編集
 function openEditSite(siteId){
   const s=sites.find(x=>x.id===siteId);
-  document.getElementById('modal-title').textContent='基本情報を編集';
-  document.getElementById('modal-body').innerHTML=`
-    <div class="field-row">
-      <div class="field"><label>現場番号</label><input id="es-siteno" value="${s.siteNo||''}"></div>
-      <div class="field"><label>工事名 *</label><input id="es-name" value="${s.name||''}"></div>
-    </div>
-    <div class="field"><label>発注者名</label><input id="es-client" value="${s.client||''}" placeholder="例：株式会社〇〇"></div>
+  setModal('基本情報を編集',`
+    <div class="field-row"><div class="field"><label>現場番号</label><input id="es-siteno" value="${s.siteNo||''}"></div><div class="field"><label>工事名 *</label><input id="es-name" value="${s.name||''}"></div></div>
+    <div class="field"><label>発注者名</label><input id="es-client" value="${s.client||''}"></div>
     <div class="field"><label>工事場所</label><input id="es-addr" value="${s.address||''}"></div>
     <div class="field"><label>構造・規模</label><input id="es-struct" value="${s.structure||''}"></div>
-    <div class="field-row">
-      <div class="field"><label>着工日</label><input type="date" id="es-start" value="${s.start||''}"></div>
-      <div class="field"><label>竣工予定日</label><input type="date" id="es-completion" value="${s.completion||''}"></div>
-    </div>
-    <div class="field-row">
-      <div class="field"><label>引渡予定日</label><input type="date" id="es-handover" value="${s.handover||''}"></div>
-      <div class="field"><label>請負代金合計（税込）</label><input type="number" id="es-amount" value="${s.totalAmount||''}"></div>
-    </div>`;
-  document.getElementById('modal-foot').innerHTML=`<button class="btn btn-ghost" onclick="closeModal()">キャンセル</button><button class="btn btn-navy" onclick="saveEditSite('${siteId}')">保存</button>`;
+    <div class="field-row"><div class="field"><label>着工日</label><input type="date" id="es-start" value="${s.start||''}"></div><div class="field"><label>竣工予定日</label><input type="date" id="es-completion" value="${s.completion||''}"></div></div>
+    <div class="field-row"><div class="field"><label>引渡予定日</label><input type="date" id="es-handover" value="${s.handover||''}"></div><div class="field"><label>当初契約金額（税込）</label><input type="number" id="es-amount" value="${s.baseAmount||s.totalAmount||''}"></div></div>`,
+    `<button class="btn btn-ghost" onclick="closeModal()">キャンセル</button><button class="btn btn-navy" onclick="saveEditSite('${siteId}')">保存</button>`);
   openModal();
 }
 async function saveEditSite(siteId){
-  const name=document.getElementById('es-name').value.trim();
-  if(!name){ alert('工事名を入力してください'); return; }
+  const name=document.getElementById('es-name').value.trim();if(!name){alert('工事名を入力してください');return;}
   const s=sites.find(x=>x.id===siteId);
-  s.siteNo=document.getElementById('es-siteno').value.trim();
-  s.name=name; s.client=document.getElementById('es-client').value.trim();
-  s.address=document.getElementById('es-addr').value;
-  s.structure=document.getElementById('es-struct').value;
-  s.start=document.getElementById('es-start').value;
-  s.completion=document.getElementById('es-completion').value;
+  s.siteNo=document.getElementById('es-siteno').value.trim();s.name=name;s.client=document.getElementById('es-client').value.trim();
+  s.address=document.getElementById('es-addr').value;s.structure=document.getElementById('es-struct').value;
+  s.start=document.getElementById('es-start').value;s.completion=document.getElementById('es-completion').value;
   s.handover=document.getElementById('es-handover').value;
-  s.totalAmount=parseInt(document.getElementById('es-amount').value||'0');
-  closeModal(); render(); await saveSite(s);
+  const amt=parseInt(document.getElementById('es-amount').value||'0');s.baseAmount=amt;s.totalAmount=amt;
+  closeModal();render();await saveSiteDB(s);
+}
+
+// 追加契約
+function openAddAdditionalContract(siteId){
+  setModal('追加契約を追加',`
+    <div class="field"><label>追加契約名 *</label><input id="ac-title" placeholder="例：仕様変更による増減工事"></div>
+    <div class="field-row"><div class="field"><label>契約金額（税込）</label><input type="number" id="ac-amount" placeholder="0"></div><div class="field"><label>締結日</label><input type="date" id="ac-date"></div></div>
+    <div class="field"><label>備考</label><input id="ac-notes" placeholder="例：変更覚書 No.743-7"></div>
+    <div class="alert alert-info" style="font-size:12px">💡 追加契約に紐づく請求項目は次のステップで追加できます</div>`,
+    `<button class="btn btn-ghost" onclick="closeModal()">キャンセル</button><button class="btn btn-navy" onclick="saveAdditionalContract('${siteId}')">保存</button>`);
+  openModal();
+}
+async function saveAdditionalContract(siteId){
+  const title=document.getElementById('ac-title').value.trim();if(!title){alert('追加契約名を入力してください');return;}
+  const s=sites.find(x=>x.id===siteId);
+  const a={id:uid(),title,amount:parseInt(document.getElementById('ac-amount').value||'0'),date:document.getElementById('ac-date').value,notes:document.getElementById('ac-notes').value};
+  s.additionalContracts.push(a);s.totalAmount=calcTotalAmount(s);
+  closeModal();render();await saveAdditionalContractDB(siteId,a);await saveSiteDB(s);
 }
 
 // 請求項目追加
 function openAddBilling(siteId){
-  document.getElementById('modal-title').textContent='請求項目を追加';
-  document.getElementById('modal-body').innerHTML=`
+  const s=sites.find(x=>x.id===siteId);
+  const addContracts=s.additionalContracts||[];
+  const contractOptions=`<option value="">当初契約</option>${addContracts.map(a=>`<option value="${a.id}">${a.title}</option>`).join('')}`;
+  setModal('請求項目を追加',`
     <div class="field"><label>請求項目名 *</label><input id="ab-label" placeholder="例：引渡時（80%）"></div>
-    <div class="field-row">
-      <div class="field"><label>請求期限日</label><input type="date" id="ab-date"></div>
-      <div class="field"><label>金額（税込）</label><input type="number" id="ab-amount" placeholder="0"></div>
-    </div>
-    <div class="field"><label>備考</label><input id="ab-note" placeholder="例：覚書No.xxx による"></div>`;
-  document.getElementById('modal-foot').innerHTML=`<button class="btn btn-ghost" onclick="closeModal()">キャンセル</button><button class="btn btn-navy" onclick="saveAddBilling('${siteId}')">追加</button>`;
+    <div class="field"><label>紐づく契約</label><select id="ab-contract">${contractOptions}</select></div>
+    <div class="field-row"><div class="field"><label>請求期限日</label><input type="date" id="ab-date"></div><div class="field"><label>金額（税込）</label><input type="number" id="ab-amount" placeholder="0"></div></div>
+    <div class="field"><label>備考</label><input id="ab-note"></div>`,
+    `<button class="btn btn-ghost" onclick="closeModal()">キャンセル</button><button class="btn btn-navy" onclick="saveAddBilling('${siteId}')">追加</button>`);
   openModal();
 }
 async function saveAddBilling(siteId){
-  const label=document.getElementById('ab-label').value.trim();
-  if(!label){ alert('項目名を入力してください'); return; }
+  const label=document.getElementById('ab-label').value.trim();if(!label){alert('項目名を入力してください');return;}
+  const contractId=document.getElementById('ab-contract').value;
   const s=sites.find(x=>x.id===siteId);
-  const b={id:uid(),label,dueDate:document.getElementById('ab-date').value,amount:parseInt(document.getElementById('ab-amount').value||'0'),note:document.getElementById('ab-note').value,issuedDate:null,paidDate:null};
-  s.billings.push(b); closeModal(); render(); await saveBilling(siteId,b);
+  const b={id:uid(),label,dueDate:document.getElementById('ab-date').value,amount:parseInt(document.getElementById('ab-amount').value||'0'),note:document.getElementById('ab-note').value,issuedDate:null,paidDate:null,isAdditional:!!contractId,contractId:contractId||null};
+  s.billings.push(b);closeModal();render();await saveBillingDB(siteId,b);
 }
 
 // 書類追加
 function openAddDoc(siteId){
-  document.getElementById('modal-title').textContent='書類を追加';
-  document.getElementById('modal-body').innerHTML=`
-    <div class="alert alert-info"><span class="alert-icon">🤖</span><span>覚書PDFをアップロードするとAIが内容を解析し、工期変更・追加請求を提案します。</span></div>
-    <div class="upload-zone" id="uz-doc" onclick="document.getElementById('pdf-doc').click()"
-      ondragover="event.preventDefault();this.classList.add('dragging')"
-      ondragleave="this.classList.remove('dragging')"
-      ondrop="this.classList.remove('dragging');handleDocDrop(event,'${siteId}')">
+  setModal('書類を追加',`
+    <div class="upload-zone" onclick="document.getElementById('pdf-doc').click()" ondragover="event.preventDefault();this.classList.add('dragging')" ondragleave="this.classList.remove('dragging')" ondrop="this.classList.remove('dragging');handleDocDrop(event,'${siteId}')">
       <div class="uz-icon">📤</div><p>覚書・変更書類のPDFをアップロード</p>
       <input type="file" id="pdf-doc" accept=".pdf" style="display:none" onchange="handleDocFile(this.files[0],'${siteId}')">
     </div>
     <div id="ai-status-doc"></div>
-    <div class="field-row">
-      <div class="field"><label>書類種別</label><select id="doc-type"><option value="change">覚書・変更書類</option><option value="original">原契約書</option></select></div>
-      <div class="field"><label>締結日</label><input type="date" id="doc-date"></div>
-    </div>
-    <div class="field"><label>書類名 *</label><input id="doc-name" placeholder="例：変更覚書 No.743-7"></div>
-    <div class="field"><label>変更内容のメモ</label><input id="doc-notes" placeholder="例：工期延長・追加工事 +¥550,000,000"></div>
-    <div id="doc-billing-suggest" style="display:none">
-      <div class="section-label" style="margin-top:4px">追加する請求項目（AI提案）</div>
-      <div id="billing-rows-doc"></div>
-      <button class="btn btn-ghost btn-sm" onclick="addBillingRow('billing-rows-doc')">＋ 請求項目を追加</button>
-    </div>`;
-  document.getElementById('modal-foot').innerHTML=`<button class="btn btn-ghost" onclick="closeModal()">キャンセル</button><button class="btn btn-navy" onclick="saveDocModal('${siteId}')">保存</button>`;
+    <div class="field-row"><div class="field"><label>書類種別</label><select id="doc-type"><option value="change">覚書・変更書類</option><option value="original">原契約書</option></select></div><div class="field"><label>締結日</label><input type="date" id="doc-date"></div></div>
+    <div class="field"><label>書類名 *</label><input id="doc-name"></div>
+    <div class="field"><label>変更内容のメモ</label><input id="doc-notes"></div>`,
+    `<button class="btn btn-ghost" onclick="closeModal()">キャンセル</button><button class="btn btn-navy" onclick="saveDocModal('${siteId}')">保存</button>`);
   openModal();
 }
-function handleDocDrop(e,sid){ e.preventDefault(); const f=e.dataTransfer.files[0]; if(f) handleDocFile(f,sid); }
+function handleDocDrop(e,sid){e.preventDefault();const f=e.dataTransfer.files[0];if(f)handleDocFile(f,sid);}
 async function handleDocFile(file,siteId){
-  if(!file) return;
-  const st=document.getElementById('ai-status-doc');
-  st.innerHTML=`<div class="ai-box ai-analyzing"><div class="spinner"></div>AIが覚書を解析中...</div>`;
+  const akey=getAnthropicKey();if(!akey){document.getElementById('ai-status-doc').innerHTML=`<div class="ai-box ai-error">⚠ APIキー未設定</div>`;return;}
+  document.getElementById('ai-status-doc').innerHTML=`<div class="ai-box ai-analyzing"><div class="spinner"></div>AIが覚書を解析中...</div>`;
   try{
     const b64=await toBase64(file);
-    const res=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{'Content-Type':'application/json','x-api-key':cfg.anthropicKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-calls':'true'},
-      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:800,messages:[{role:'user',content:[
-        {type:'document',source:{type:'base64',media_type:'application/pdf',data:b64}},
-        {type:'text',text:`この覚書PDFから以下をJSONのみで返してください。コードブロック不要。
-{"docName":"書類名","docDate":"YYYY-MM-DD","docNotes":"変更内容要約","newHandover":"YYYY-MM-DDまたはnull","newBillings":[{"label":"請求名","dueDate":"YYYY-MM-DD","amount":税込金額,"note":"備考"}]}`}
-      ]}]})
-    });
-    if(!res.ok) throw new Error('API Error: '+res.status);
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':akey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-calls':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:800,messages:[{role:'user',content:[{type:'document',source:{type:'base64',media_type:'application/pdf',data:b64}},{type:'text',text:`この覚書PDFから以下をJSONのみで返してください。コードブロック不要。{"docName":"書類名","docDate":"YYYY-MM-DD","docNotes":"変更内容要約","newHandover":"YYYY-MM-DDまたはnull"}`}]}]})});
     const data=await res.json();
     const r=JSON.parse(data.content.map(c=>c.text||'').join('').replace(/```json|```/g,'').trim());
-    if(r.docName) document.getElementById('doc-name').value=r.docName;
-    if(r.docDate) document.getElementById('doc-date').value=r.docDate;
-    if(r.docNotes) document.getElementById('doc-notes').value=r.docNotes;
-    if(r.newHandover){
-      const s=sites.find(x=>x.id===siteId);
-      if(s&&confirm(`引渡予定日を ${fmtDate(r.newHandover)} に更新しますか？`)){ s.handover=r.newHandover; await saveSite(s); }
-    }
-    document.getElementById('billing-rows-doc').innerHTML='';
-    if(r.newBillings?.length) r.newBillings.forEach(b=>addBillingRow('billing-rows-doc',b.label||'',b.dueDate||'',b.amount||''));
-    document.getElementById('doc-billing-suggest').style.display='block';
-    st.innerHTML=`<div class="ai-box ai-done">✅ 解析完了${r.docNotes?` — ${r.docNotes}`:''}</div>`;
-  } catch(err){
-    st.innerHTML=`<div class="ai-box ai-error">⚠ 解析失敗。手動で入力してください。（${err.message}）</div>`;
-  }
+    if(r.docName)document.getElementById('doc-name').value=r.docName;
+    if(r.docDate)document.getElementById('doc-date').value=r.docDate;
+    if(r.docNotes)document.getElementById('doc-notes').value=r.docNotes;
+    if(r.newHandover){const s=sites.find(x=>x.id===siteId);if(s&&confirm(`引渡予定日を ${fmtDate(r.newHandover)} に更新しますか？`)){s.handover=r.newHandover;await saveSiteDB(s);}}
+    document.getElementById('ai-status-doc').innerHTML=`<div class="ai-box ai-done">✅ 解析完了</div>`;
+  }catch(err){document.getElementById('ai-status-doc').innerHTML=`<div class="ai-box ai-error">⚠ 解析失敗: ${err.message}</div>`;}
 }
 async function saveDocModal(siteId){
-  const name=document.getElementById('doc-name').value.trim();
-  if(!name){ alert('書類名を入力してください'); return; }
+  const name=document.getElementById('doc-name').value.trim();if(!name){alert('書類名を入力してください');return;}
   const s=sites.find(x=>x.id===siteId);
   const d={id:uid(),type:document.getElementById('doc-type').value,name,date:document.getElementById('doc-date').value,notes:document.getElementById('doc-notes').value};
-  s.docs.push(d);
-  const rows=document.querySelectorAll('#billing-rows-doc > div');
-  const newBillings=[];
-  rows.forEach(row=>{
-    const ins=row.querySelectorAll('input');
-    if(ins[0]?.value){ const b={id:uid(),label:ins[0].value,dueDate:ins[1]?.value||'',amount:parseInt(ins[2]?.value||'0'),note:'覚書による追加',issuedDate:null,paidDate:null}; s.billings.push(b); newBillings.push(b); }
-  });
-  closeModal(); render();
-  await saveDoc(siteId,d);
-  for(const b of newBillings) await saveBilling(siteId,b);
+  s.docs.push(d);closeModal();render();await saveDocDB(siteId,d);
 }
 
-function toBase64(file){ return new Promise((res,rej)=>{ const r=new FileReader(); r.onload=()=>res(r.result.split(',')[1]); r.onerror=rej; r.readAsDataURL(file); }); }
+// CSV取込
+function openCsvModal(){
+  setModal('CSV一括取込',`
+    <div class="alert alert-info"><span style="font-size:18px">📋</span><span>CSVファイルから現場情報を一括登録できます。</span></div>
+    <div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;font-size:12px;margin-bottom:4px">
+      <div style="font-weight:600;margin-bottom:6px">CSVフォーマット（1行目はヘッダー）</div>
+      <code style="font-size:11px;color:var(--text-2)">現場番号,発注者名,工事名,工事場所,構造規模,着工日(YYYY-MM-DD),竣工予定日,引渡予定日,請負代金</code>
+    </div>
+    <label class="btn btn-ghost" style="cursor:pointer;justify-content:center">📂 CSVファイルを選択<input type="file" accept=".csv" style="display:none" onchange="handleCsv(this.files[0])"></label>
+    <div id="csv-preview"></div>`,
+    `<button class="btn btn-ghost" onclick="closeModal()">キャンセル</button><button class="btn btn-navy" id="csv-import-btn" style="display:none" onclick="importCsvData()">一括登録</button>`);
+  openModal();
+}
+
+let csvParsed=[];
+async function handleCsv(file){
+  if(!file)return;
+  const text=await file.text();
+  const lines=text.split('\n').filter(l=>l.trim());
+  const headers=lines[0].split(',').map(h=>h.trim());
+  csvParsed=lines.slice(1).map(line=>{
+    const vals=line.split(',').map(v=>v.trim().replace(/^"|"$/g,''));
+    return {siteNo:vals[0]||'',client:vals[1]||'',name:vals[2]||'',address:vals[3]||'',structure:vals[4]||'',start:vals[5]||'',completion:vals[6]||'',handover:vals[7]||'',totalAmount:parseInt(vals[8]||'0')};
+  }).filter(r=>r.name);
+  let html=`<div class="csv-preview"><table style="width:100%;font-size:11px;border-collapse:collapse"><thead><tr>${['現場番号','発注者','工事名','着工','引渡','金額'].map(h=>`<th style="padding:4px;border-bottom:1px solid var(--border);text-align:left">${h}</th>`).join('')}</tr></thead><tbody>`;
+  csvParsed.forEach(r=>{html+=`<tr>${[r.siteNo,r.client,r.name,r.start,r.handover,fmtMoney(r.totalAmount)].map(v=>`<td style="padding:4px;border-bottom:1px solid var(--border)">${v}</td>`).join('')}</tr>`;});
+  html+=`</tbody></table></div><div style="font-size:12px;color:var(--text-2);margin-top:6px">${csvParsed.length}件を検出しました</div>`;
+  document.getElementById('csv-preview').innerHTML=html;
+  document.getElementById('csv-import-btn').style.display='inline-flex';
+}
+async function importCsvData(){
+  if(!csvParsed.length)return;
+  const btn=document.getElementById('csv-import-btn');btn.disabled=true;btn.textContent='登録中...';
+  let count=0;
+  for(const r of csvParsed){
+    const s={id:uid(),...r,baseAmount:r.totalAmount,docs:[],billings:[],additionalContracts:[]};
+    sites.push(s);
+    try{await saveSiteDB(s);count++;}catch(e){console.error(e);}
+  }
+  closeModal();render();alert(`${count}件の現場を登録しました`);
+}
+
+// ユーザー管理モーダル
+function openUserMgmt(){switchTab('users');}
+
+// ─── UTIL ───
+function toBase64(file){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result.split(',')[1]);r.onerror=rej;r.readAsDataURL(file);});}
 
 // ─── BOOT ───
 async function boot(){
-  loadCfg();
-  if(!cfg.sbUrl||!cfg.sbKey){
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session){
     document.getElementById('loading-screen').style.display='none';
-    document.getElementById('setup-screen').style.display='flex';
+    document.getElementById('login-screen').style.display='flex';
     return;
   }
-  if(!initSupabase()){
+  currentUser=session.user;
+  const {data:profile}=await sb.from('user_profiles').select('*').eq('id',currentUser.id).single();
+  currentProfile=profile;
+  if(!profile||profile.role==='pending'){
     document.getElementById('loading-screen').style.display='none';
-    document.getElementById('setup-screen').style.display='flex';
+    document.getElementById('pending-screen').style.display='flex';
+    document.getElementById('pending-email').textContent=currentUser.email;
     return;
   }
+  document.getElementById('user-name-label').textContent=profile.name||currentUser.email;
+  document.getElementById('role-badge-label').textContent=roleName(profile.role);
   try{
     await loadFromDB();
     subscribeRealtime();
     document.getElementById('loading-screen').style.display='none';
     document.getElementById('main-app').style.display='flex';
     render();
-  } catch(e){
-    document.getElementById('loading-screen').innerHTML=`<div style="color:var(--red);text-align:center;padding:20px"><p style="font-size:18px;margin-bottom:8px">⚠ 接続エラー</p><p style="font-size:13px;color:var(--text-2);margin-bottom:16px">${e.message}</p><button class="btn btn-navy" onclick="openSettings();document.getElementById('loading-screen').style.display='none';document.getElementById('main-app').style.display='flex';">設定を確認する</button></div>`;
-    document.getElementById('main-app').style.display='flex';
+  }catch(e){
+    document.getElementById('loading-screen').innerHTML=`<div style="color:var(--red);text-align:center;padding:20px"><p style="font-size:18px;margin-bottom:8px">⚠ 接続エラー</p><p style="font-size:13px;margin-bottom:16px">${e.message}</p><button class="btn btn-navy" onclick="location.reload()">再読込</button></div>`;
   }
+  sb.auth.onAuthStateChange((event,session)=>{if(event==='SIGNED_OUT')location.reload();});
 }
-
 boot();
 </script>
 </body>
