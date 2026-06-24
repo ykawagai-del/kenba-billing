@@ -209,7 +209,12 @@ tbody tr:hover{background:#fafbfc}
 const CFG_KEY = 'kenba_config_v1';
 let cfg = {};
 
-function loadCfg(){ try{ cfg=JSON.parse(localStorage.getItem(CFG_KEY)||'{}'); }catch(e){ cfg={}; } }
+function loadCfg(){
+  try{ cfg=JSON.parse(localStorage.getItem(CFG_KEY)||'{}'); }catch(e){ cfg={}; }
+  // デフォルト値（未設定の場合のみ適用）
+  if(!cfg.sbUrl) cfg.sbUrl = 'https://mvzjypvvzwoxdntjxlxt.supabase.co';
+  if(!cfg.sbKey) cfg.sbKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im12emp5cHZ2endveGRudGp4bHh0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIyMzM1ODIsImV4cCI6MjA5NzgwOTU4Mn0.OAo802jvm1kpqvJS32O1hKRefazNRA8sLcvDx9RY4qA';
+}
 function saveCfg(){ localStorage.setItem(CFG_KEY, JSON.stringify(cfg)); }
 
 function saveSetup(){
