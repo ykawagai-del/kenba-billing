@@ -264,7 +264,7 @@ async function loginWithGoogle(){
 }
 async function logout(){
   await sb.auth.signOut();
-  location.reload();
+  window.location.href = 'https://ykawagai-del.github.io/kenba-billing/kenba-billing.html';
 }
 
 // ─── DB ───
